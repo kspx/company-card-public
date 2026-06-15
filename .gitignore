@@ -12,4 +12,4 @@
 .DS_Store
 data/
 backend/src/main/java/zone/cogni/companycard/tools/
-backend/src/main/resources/mappings/
+backend/src/main/resources/seed/

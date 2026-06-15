@@ -13,3 +13,4 @@
 data/
 backend/src/main/java/zone/cogni/companycard/tools/
 backend/src/main/resources/seed/
+/backend/src/main/resources/application-local.yml

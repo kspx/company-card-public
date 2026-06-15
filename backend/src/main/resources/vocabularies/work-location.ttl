@@ -1,0 +1,42 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:WorkLocation a skos:ConceptScheme ;
+  skos:prefLabel "Work Location"@en ;
+  dcterms:description "Work modality options for personnel and employment contracts."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:REMOTE, ccv:HYBRID, ccv:ON_SITE, ccv:CLIENT_SITE .
+
+ccv:REMOTE a skos:Concept ;
+  skos:inScheme ccv:WorkLocation ;
+  skos:topConceptOf ccv:WorkLocation ;
+  skos:prefLabel "Remote"@en ;
+  skos:altLabel "Work From Home"@en, "WFH"@en ;
+  skos:definition "Working fully remotely with no requirement to be on-site."@en ;
+  skos:notation "REMOTE" .
+
+ccv:HYBRID a skos:Concept ;
+  skos:inScheme ccv:WorkLocation ;
+  skos:topConceptOf ccv:WorkLocation ;
+  skos:prefLabel "Hybrid"@en ;
+  skos:altLabel "Flexible"@en ;
+  skos:definition "A mix of remote and on-site work, with agreed on-site days per week or month."@en ;
+  skos:notation "HYBRID" .
+
+ccv:ON_SITE a skos:Concept ;
+  skos:inScheme ccv:WorkLocation ;
+  skos:topConceptOf ccv:WorkLocation ;
+  skos:prefLabel "On-site"@en ;
+  skos:altLabel "In-office"@en ;
+  skos:definition "Working fully from the employer's or consultancy's office."@en ;
+  skos:notation "ON_SITE" .
+
+ccv:CLIENT_SITE a skos:Concept ;
+  skos:inScheme ccv:WorkLocation ;
+  skos:topConceptOf ccv:WorkLocation ;
+  skos:prefLabel "Client site"@en ;
+  skos:altLabel "On-premise"@en ;
+  skos:definition "Working at the client's premises, common for consultancy engagements."@en ;
+  skos:notation "CLIENT_SITE" .

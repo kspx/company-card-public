@@ -1,0 +1,15 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+ccv:ImportSource a skos:ConceptScheme ;
+  skos:prefLabel "Import Source"@en .
+
+ccv:IdentifierScheme a skos:ConceptScheme ;
+  skos:prefLabel "Identifier Scheme"@en ;
+  skos:definition "The external system an adms:Identifier belongs to."@en .
+
+ccv:SLACK   a skos:Concept ; skos:inScheme ccv:ImportSource , ccv:IdentifierScheme ; skos:prefLabel "Slack"@en .
+ccv:GITHUB  a skos:Concept ; skos:inScheme ccv:ImportSource , ccv:IdentifierScheme ; skos:prefLabel "GitHub"@en .
+ccv:MANUAL  a skos:Concept ; skos:inScheme ccv:ImportSource ; skos:prefLabel "Manual"@en .
+ccv:DERIVED a skos:Concept ; skos:inScheme ccv:ImportSource ; skos:prefLabel "Derived"@en ;
+  skos:definition "Inferred by the system from other graph facts, not asserted by a human or a source API."@en .

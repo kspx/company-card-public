@@ -1,0 +1,83 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix nace2: <http://data.europa.eu/ux2/nace2/> .
+
+ccv:IndustrySector a skos:ConceptScheme ;
+  skos:prefLabel "Industry Sector"@en ;
+  dcterms:description "Industry sectors of client organizations served by the software consultancy. Mapped to NACE Rev. 2 via skos:closeMatch."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:HEALTHCARE, ccv:FINANCE, ccv:GOVERNMENT,
+                     ccv:ENERGY, ccv:TELECOM, ccv:RETAIL, ccv:EDUCATION, ccv:TECHNOLOGY .
+
+ccv:HEALTHCARE a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Healthcare"@en ;
+  skos:definition "Healthcare, pharmaceutical, and life sciences sector."@en ;
+  skos:notation "HEALTHCARE" ;
+  skos:closeMatch nace2:Q .
+
+ccv:FINANCE a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Finance"@en ;
+  skos:altLabel "Financial Services"@en, "Banking"@en ;
+  skos:definition "Banking, insurance, and financial services sector."@en ;
+  skos:notation "FINANCE" ;
+  skos:closeMatch nace2:K .
+
+ccv:GOVERNMENT a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Government"@en ;
+  skos:altLabel "Public Sector"@en ;
+  skos:definition "Government, public administration, and EU institutions."@en ;
+  skos:notation "GOVERNMENT" ;
+  skos:closeMatch nace2:O .
+
+ccv:ENERGY a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Energy"@en ;
+  skos:altLabel "Utilities"@en ;
+  skos:definition "Energy, utilities, and environmental services sector."@en ;
+  skos:notation "ENERGY" ;
+  skos:closeMatch nace2:D .
+
+ccv:TELECOM a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Telecommunications"@en ;
+  skos:altLabel "Telecom"@en ;
+  skos:definition "Telecommunications and media sector."@en ;
+  skos:notation "TELECOM" ;
+  skos:closeMatch nace2:61 .
+
+ccv:RETAIL a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Retail"@en ;
+  skos:altLabel "E-commerce"@en ;
+  skos:definition "Retail, e-commerce, and consumer goods sector."@en ;
+  skos:notation "RETAIL" ;
+  skos:closeMatch nace2:G .
+
+ccv:EDUCATION a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Education"@en ;
+  skos:altLabel "EdTech"@en ;
+  skos:definition "Education, research, and academic institutions."@en ;
+  skos:notation "EDUCATION" ;
+  skos:closeMatch nace2:P .
+
+ccv:TECHNOLOGY a skos:Concept ;
+  skos:inScheme ccv:IndustrySector ;
+  skos:topConceptOf ccv:IndustrySector ;
+  skos:prefLabel "Technology"@en ;
+  skos:altLabel "IT"@en, "Software"@en ;
+  skos:definition "Information technology and software companies."@en ;
+  skos:notation "TECHNOLOGY" ;
+  skos:closeMatch nace2:62 .

@@ -1,0 +1,16 @@
+@if (auth.role === 'ADMIN') {
+    <button mat-icon-button
+            [color]="pseudo.enabled ? 'accent' : ''"
+            (click)="pseudo.toggle()"
+            [matTooltip]="pseudo.enabled ? 'Presentation mode ON — personal names hidden' : 'Presentation mode OFF — show personal names'">
+        <mat-icon>{{ pseudo.enabled ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+}
+@if (auth.isAuthenticated) {
+    <app-user-menu />
+} @else {
+    <button mat-stroked-button (click)="router.navigate(['/login'])">
+        <mat-icon>login</mat-icon>
+        Login
+    </button>
+}

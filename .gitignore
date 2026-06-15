@@ -1,0 +1,15 @@
+/backend/build/
+/frontend/.angular/
+/.idea/
+/.gradle/
+/build/reports/problems/problems-report.html
+/frontend/.husky/pre-commit
+/build/
+/.gradle/
+/backend/build/
+/.idea/
+*.zip
+.DS_Store
+data/
+backend/src/main/java/zone/cogni/companycard/tools/
+backend/src/main/resources/mappings/

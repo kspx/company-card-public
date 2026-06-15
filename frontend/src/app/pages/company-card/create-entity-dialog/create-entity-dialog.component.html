@@ -1,0 +1,221 @@
+<h2 mat-dialog-title>Create New {{ data.classLabel }}</h2>
+
+<mat-dialog-content>
+    @if (loading) {
+        <div class="dialog-loading">
+            <mat-spinner diameter="40"></mat-spinner>
+            <span>Loading form...</span>
+        </div>
+    }
+
+    @if (error) {
+        <div class="dialog-error">{{ error }}</div>
+    }
+
+    @if (!loading && !error && isOrganization) {
+        <div class="wikidata-panel">
+            <label for="wikidata-search">Pre-fill from Wikidata</label>
+            <small class="field-comment">Search the organization on Wikidata to auto-fill fields. You can still edit anything afterwards.</small>
+            @if (wikidataPicked) {
+                <div class="wikidata-picked">
+                    <span class="wikidata-picked-label">
+                        <strong>{{ wikidataPicked.label }}</strong>
+                        <small>{{ wikidataPicked.description }}</small>
+                        <a [href]="wikidataPicked.uri" target="_blank" rel="noopener">{{ wikidataPicked.qid }}</a>
+                    </span>
+                    <button type="button" class="esco-chip-remove" (click)="clearWikidataPick()">×</button>
+                </div>
+                @if (wikidataEnriching) {
+                    <small>Fetching details from Wikidata…</small>
+                }
+            } @else {
+                <input id="wikidata-search" type="text"
+                       placeholder="Type organization name (min 2 chars)…"
+                       [ngModel]="wikidataQuery"
+                       (ngModelChange)="onWikidataSearchChange($event)"
+                       [ngModelOptions]="{standalone: true}"
+                       autocomplete="off"/>
+                @if (wikidataSearching) {
+                    <small>Searching Wikidata…</small>
+                }
+                @if (wikidataResults.length > 0) {
+                    <div class="esco-results">
+                        @for (c of wikidataResults; track c.qid) {
+                            <button type="button" class="esco-result-item" (click)="selectWikidata(c)">
+                                <strong>{{ c.label }}</strong>
+                                @if (c.description) {
+                                    <small> — {{ c.description }}</small>
+                                }
+                                <small class="wikidata-qid"> ({{ c.qid }})</small>
+                            </button>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+
+    @if (!loading && !error && fields.length > 0) {
+        <form class="dialog-form">
+            @for (f of fields; track f.property) {
+                <div class="dialog-field" [class.dialog-field--required]="f.required">
+                    <label [attr.for]="'dialog_' + fu.getPropName(f.property)">
+                        {{ f.label || fu.getPropName(f.property) }}
+                        @if (f.required) {
+                            <span class="required-badge">*</span>
+                        }
+                    </label>
+
+                    <!-- Datatype input (single value) -->
+                    @if (f.isDatatypeProperty && !fu.isSKOS(f) && f.maxCount === 1) {
+                        <input [id]="'dialog_' + fu.getPropName(f.property)"
+                               [type]="fu.inputType(f)"
+                               [(ngModel)]="formData[fu.getPropName(f.property)]"
+                               [name]="fu.getPropName(f.property)"
+                               [required]="f.required"
+                               [placeholder]="f.comment || ''"/>
+                    }
+
+                    <!-- Datatype input (multi-value) -->
+                    @if (f.isDatatypeProperty && !fu.isSKOS(f) && f.maxCount !== 1) {
+                        @if (getValues(f).length > 0) {
+                            <div class="esco-chips">
+                                @for (val of getValues(f); track val) {
+                                    <span class="esco-chip">
+                                        {{ val }}
+                                        <button type="button" class="esco-chip-remove"
+                                                (click)="removeValue(f, val)">×</button>
+                                    </span>
+                                }
+                            </div>
+                        }
+                        <div style="display:flex;gap:6px;align-items:center">
+                            <input [type]="fu.inputType(f)"
+                                   [placeholder]="f.comment || 'Add ' + f.label + '...'"
+                                   [ngModel]="multiValueInput[fu.getPropName(f.property)] || ''"
+                                   (ngModelChange)="multiValueInput[fu.getPropName(f.property)] = $event"
+                                   [ngModelOptions]="{standalone: true}"
+                                   (keydown.enter)="addMultiValue(f, $event)"
+                                   style="flex:1"/>
+                            <button type="button" class="quick-create" style="width:auto;border-top:0;padding:8px 12px"
+                                    (click)="addMultiValue(f)">Add
+                            </button>
+                        </div>
+                    }
+
+                    <!-- SKOS dropdown -->
+                    @if (fu.isSKOS(f)) {
+                        <select [id]="'dialog_' + fu.getPropName(f.property)"
+                                [(ngModel)]="formData[fu.getPropName(f.property)]"
+                                [name]="fu.getPropName(f.property)"
+                                [required]="f.required">
+                            <option [ngValue]="null">-- Select {{ f.label }} --</option>
+                            @for (c of skosConcepts[f.property] || []; track c.uri) {
+                                <option [ngValue]="c.uri">{{ c.label }}</option>
+                            }
+                        </select>
+                    }
+
+                    <!-- ESCO autocomplete -->
+                    @if (fu.isEsco(f)) {
+                        @if (getValues(f).length > 0) {
+                            <div class="esco-chips">
+                                @for (uri of getValues(f); track uri) {
+                                    <span class="esco-chip">
+                                        {{ search.escoLabels[uri] || uri }}
+                                        <button type="button" class="esco-chip-remove"
+                                                (click)="removeValue(f, uri)">×</button>
+                                    </span>
+                                }
+                            </div>
+                        }
+                        <input type="text"
+                               [placeholder]="'Type to search ' + f.label + '...'"
+                               [ngModel]="search.escoSearchText[fu.getPropName(f.property)] || ''"
+                               (ngModelChange)="search.onEscoSearch(f, $event)"
+                               [ngModelOptions]="{standalone: true}"
+                               autocomplete="off"/>
+                        @if (search.escoSearchLoading[fu.getPropName(f.property)]) {
+                            <small>Searching...</small>
+                        }
+                        @if ((search.escoSearchResults[fu.getPropName(f.property)] || []).length > 0) {
+                            <div class="esco-results">
+                                @for (item of search.escoSearchResults[fu.getPropName(f.property)]; track item.uri) {
+                                    <button type="button" class="esco-result-item"
+                                            (click)="selectEsco(f, item)">{{ item.label }}
+                                    </button>
+                                }
+                            </div>
+                        }
+                    }
+
+                    <!-- Object property autocomplete -->
+                    @if (fu.isObjectProperty(f)) {
+                        @if (getValues(f).length > 0) {
+                            <div class="esco-chips">
+                                @for (uri of getValues(f); track uri) {
+                                    <span class="esco-chip">
+                                        {{ fu.getInstanceLabel(uri, objectInstances) }}
+                                        @if (!f.noCreate && !isLocked(f)) {
+                                            <button type="button" class="esco-chip-remove"
+                                                    (click)="removeValue(f, uri)">×</button>
+                                        }
+                                    </span>
+                                }
+                            </div>
+                        }
+                        @if (!isLocked(f) && (f.maxCount !== 1 || getValues(f).length === 0)) {
+                            @if (!f.createOnly) {
+                                <input type="text"
+                                       [placeholder]="'Search ' + f.label + '...'"
+                                       [ngModel]="search.objSearchText[fu.getPropName(f.property)] || ''"
+                                       (ngModelChange)="search.onObjSearch(f, $event)"
+                                       [ngModelOptions]="{standalone: true}"
+                                       autocomplete="off"/>
+                                @if ((search.objSearchText[fu.getPropName(f.property)] || '').length > 0) {
+                                    <div class="esco-results">
+                                        @for (inst of getFilteredObjInstances(f); track inst.uri) {
+                                            <button type="button" class="esco-result-item"
+                                                    (click)="selectObj(f, inst)">
+                                                {{ inst.label || fu.getLocalName(inst.uri) }}
+                                            </button>
+                                        }
+                                    </div>
+                                }
+                            }
+                            @if (!f.noCreate) {
+                                <button type="button" class="quick-create"
+                                        (click)="openNestedCreateDialog(f)">
+                                    + Create new {{ fu.getLocalName(f.range) }}
+                                </button>
+                            }
+                        }
+                    }
+
+                    @if (f.comment) {
+                        <small class="field-comment">{{ f.comment }}</small>
+                    }
+                </div>
+            }
+        </form>
+    }
+
+    @if (statusMessage) {
+        <div class="dialog-status">
+            <span [class.success]="!statusError" [class.error]="statusError">{{ statusMessage }}</span>
+        </div>
+    }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary"
+            (click)="onCreate()"
+            [disabled]="loading || submitting">
+        @if (submitting) {
+            <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+            <span>Create</span>
+        }
+    </button>
+</mat-dialog-actions>

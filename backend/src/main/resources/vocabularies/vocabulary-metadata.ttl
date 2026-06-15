@@ -1,0 +1,15 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+
+<https://ontology.cogni.zone/company-card-vocabularies#> a owl:Ontology ;
+  dcterms:title "Company Card Vocabularies"@en ;
+  dcterms:description "Custom SKOS concept schemes for the Company Card ontology: service types, project roles, company sizes, statuses, and other domain-specific classifications for software consultancies."@en ;
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:creator "Christina Spachiou"@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  owl:versionInfo "1.0.0" ;
+  vann:preferredNamespacePrefix "ccv" ;
+  vann:preferredNamespaceUri "https://ontology.cogni.zone/company-card-vocabularies#" ;
+  dcterms:conformsTo <http://www.w3.org/2004/02/skos/core#> .

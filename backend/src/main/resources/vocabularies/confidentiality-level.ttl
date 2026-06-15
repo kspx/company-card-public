@@ -1,0 +1,33 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:ConfidentialityLevel a skos:ConceptScheme ;
+  skos:prefLabel "Confidentiality Level"@en ;
+  dcterms:description "Controls the visibility of project information for portfolio, CV, and client-facing use."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:PUBLIC, ccv:INTERNAL, ccv:CONFIDENTIAL .
+
+ccv:PUBLIC a skos:Concept ;
+  skos:inScheme ccv:ConfidentialityLevel ;
+  skos:topConceptOf ccv:ConfidentialityLevel ;
+  skos:prefLabel "Public"@en ;
+  skos:definition "Freely shareable; may appear in public portfolios, websites, and proposals."@en ;
+  skos:notation "PUBLIC" .
+
+ccv:INTERNAL a skos:Concept ;
+  skos:inScheme ccv:ConfidentialityLevel ;
+  skos:topConceptOf ccv:ConfidentialityLevel ;
+  skos:prefLabel "Internal"@en ;
+  skos:altLabel "Company Only"@en ;
+  skos:definition "Visible only within the company; not shared with external parties without approval."@en ;
+  skos:notation "INTERNAL" .
+
+ccv:CONFIDENTIAL a skos:Concept ;
+  skos:inScheme ccv:ConfidentialityLevel ;
+  skos:topConceptOf ccv:ConfidentialityLevel ;
+  skos:prefLabel "Confidential"@en ;
+  skos:altLabel "NDA-protected"@en ;
+  skos:definition "Subject to NDA or strict confidentiality; not to be disclosed outside a restricted group."@en ;
+  skos:notation "CONFIDENTIAL" .

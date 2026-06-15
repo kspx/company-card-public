@@ -1,0 +1,136 @@
+{
+  "internalRepos": [
+    "asquare",
+    "hanami",
+    "ng-cognizone",
+    "ng",
+    "cz-graphrag-demos",
+    "vinz",
+    "elasticsearch",
+    "morgana",
+    "semanticz",
+    "pm2",
+    "multi",
+    "generic",
+    "owl",
+    "augmented",
+    "english",
+    "eurio",
+    "emas"
+  ],
+  "organizations": [
+    {
+      "id": "lux",
+      "githubPrefixes": ["lux"],
+      "legalName": "Service central de législation",
+      "altLabel": "SCL",
+      "description": "Luxembourg government body responsible for the official publication and consolidation of laws and regulations (Mémorial Journal).",
+      "website": "https://scl.gouvernement.lu",
+      "offices": [
+        { "city": "Luxembourg", "country": "LUX" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE",
+      "foundingDate": "1959-08-04"
+    },
+    {
+      "id": "ch",
+      "githubPrefixes": ["ch"],
+      "legalName": "Bundesamt für Informatik und Telekommunikation",
+      "altLabel": "BIT / OFIT",
+      "description": "Swiss federal government ICT service provider under the Federal Department of Finance, serving the entire federal administration.",
+      "sameAs": "https://www.wikidata.org/wiki/Q1005438",
+      "offices": [
+        { "city": "Zollikofen", "country": "CHE", "street": "Eichenweg 3", "postCode": "3052" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    },
+    {
+      "id": "etf",
+      "githubPrefixes": ["etf", "acqf"],
+      "legalName": "European Training Foundation",
+      "altLabel": "ETF",
+      "sameAs": "https://www.wikidata.org/wiki/Q372042",
+      "description": "Decentralised EU agency supporting human capital development in countries neighbouring the EU. Implementing body for ACQF (African Continental Qualifications Framework), an African Union initiative supported by the European Union.",
+      "offices": [
+        { "city": "Turin", "country": "ITA" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    },
+    {
+      "id": "era",
+      "githubPrefixes": ["era"],
+      "legalName": "European Union Agency for Railways",
+      "altLabel": "ERA",
+      "sameAs": "https://www.wikidata.org/wiki/Q369273",
+      "description": "Independent decentralised EU agency responsible for railway interoperability and safety. Operates semantic knowledge-graph systems (RINF, ERATV, ECVVR) using RDF, OWL, and SKOS.",
+      "offices": [
+        { "city": "Valenciennes", "country": "FRA" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    },
+    {
+      "id": "ec",
+      "githubPrefixes": ["esco", "cordis", "ec", "elm", "qualification", "ob"],
+      "legalName": "European Commission",
+      "altLabel": "EC",
+      "sameAs": "https://www.wikidata.org/wiki/Q8880",
+      "description": "Executive body of the European Union. Cognizone projects span multiple programmes: ESCO (skills classification, DG EMPL), CORDIS (research information service), ELM (European Learning Model), and Qualification frameworks.",
+      "offices": [
+        { "city": "Brussels", "country": "BEL" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    },
+    {
+      "id": "europass",
+      "githubPrefixes": ["europass"],
+      "altLabel": "Cedefop / Europass",
+      "sameAs": "https://www.wikidata.org/wiki/Q116214",
+      "description": "Independent EU agency (Cedefop) responsible for operating the Europass platform — the EU framework for transparency of skills and qualifications, jointly with European Commission DG EMPL.",
+      "offices": [
+        { "city": "Thessaloniki", "country": "GRC" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    },
+    {
+      "id": "bmw",
+      "githubPrefixes": ["bmw"],
+      "legalName": "Bayerische Motoren Werke AG",
+      "altLabel": "BMW",
+      "sameAs": "https://www.wikidata.org/wiki/Q26678",
+      "description": "German multinational automotive manufacturer headquartered in Munich, Germany.",
+      "offices": [
+        { "city": "Munich", "country": "DEU" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_LIMITED",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    },
+    {
+      "id": "epdp",
+      "githubPrefixes": ["epdp"],
+      "altLabel": "EP / EPDP",
+      "sameAs": "https://www.wikidata.org/wiki/Q8889",
+      "description": "Directly elected legislative body of the European Union. EPDP is an internal project acronym for Cognizone's work with the European Parliament.",
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    },
+    {
+      "id": "paradigm",
+      "githubPrefixes": ["eb"],
+      "legalName": "Centre d'Informatique pour la Région bruxelloise",
+      "altLabel": "Paradigm (CIRB-CIBG)",
+      "description": "Public-interest body and ICT partner of the Brussels-Capital Region (formerly CIRB/CIBG-BRIC). Cognizone built openbudgets.brussels, the regional registry of public procurement and subsidies.",
+      "sameAs": "https://www.wikidata.org/wiki/Q17354132",
+      "offices": [
+        { "city": "Brussels", "country": "BEL" }
+      ],
+      "orgType": "https://ontology.cogni.zone/company-card-vocabularies#PUBLIC_BODY",
+      "orgStatus": "https://ontology.cogni.zone/company-card-vocabularies#ACTIVE"
+    }
+  ]
+}

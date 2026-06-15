@@ -1,0 +1,1122 @@
+@prefix cc:    <https://ontology.cogni.zone/company-card#> .
+@prefix schema:<https://schema.org/> .
+@prefix org:   <http://www.w3.org/ns/org#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix rov:   <http://www.w3.org/ns/regorg#> .
+@prefix locn:  <http://www.w3.org/ns/locn#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix esco:  <http://data.europa.eu/esco/model#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix adms:  <http://www.w3.org/ns/adms#> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+
+<https://ontology.cogni.zone/company-card#> a owl:Ontology ;
+  owl:versionInfo "1.0.0" ;
+  owl:versionIRI <https://ontology.cogni.zone/company-card/1.0.0#> ;
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:creator "Christina Spachiou"@en ;
+  dcterms:publisher "Cognizone"@en ;
+  dcterms:created "2025-08-15"^^xsd:date ;
+  dcterms:modified "2026-02-07"^^xsd:date ;
+  dcterms:title "Company Card Ontology"@en ;
+  dcterms:description "An ontology for describing organizations, projects, teams, engagements, and people in a consultancy context. Built on top of ROV, ORG, DOAP, LOCN, ESCO, and aligned with Schema.org and SKOS. Pattern: curated reuse with local stubs (no full owl:imports)."@en ;
+  rdfs:label "Company Card Ontology"@en ;
+  rdfs:comment "Complete version including all vocabularies, employment tracking, and resource management properties."@en ;
+  vann:preferredNamespacePrefix "cc" ;
+  vann:preferredNamespaceUri "https://ontology.cogni.zone/company-card#" ;
+  dcterms:conformsTo <http://www.w3.org/2002/07/owl#> ,
+                     <http://www.w3.org/2004/02/skos/core#> .
+
+#External term stubs
+
+# FOAF
+foaf:Agent a owl:Class ;
+  rdfs:label "Agent (FOAF)"@en ;
+  rdfs:comment "A person or organisation that acts in the world."@en .
+
+# ORG / ROV
+org:Organization a owl:Class ;
+  rdfs:label "Organization (W3C ORG)"@en ;
+  rdfs:comment "An organization such as a business, charity, government, or standards body."@en .
+
+org:FormalOrganization a owl:Class ;
+  rdfs:subClassOf org:Organization ;
+  rdfs:label "Formal Organization (W3C ORG)"@en ;
+  rdfs:comment "An organization recognized in the applicable legal jurisdiction, typically comprising a legal entity."@en .
+
+rov:RegisteredOrganization a owl:Class ;
+  rdfs:subClassOf org:FormalOrganization ;
+  rdfs:label "Registered Organization (ROV)"@en ;
+  rdfs:comment "An organization that gains legal entity status by the act of registration."@en .
+
+org:OrganizationalUnit a owl:Class ;
+  rdfs:subClassOf org:Organization ;
+  rdfs:label "Organizational Unit"@en ;
+  rdfs:comment "A subdivision of an organization such as a department, team, or office."@en .
+
+rov:legalName a owl:DatatypeProperty ;
+  rdfs:label "legal name"@en ;
+  rdfs:comment "The legally registered name of the organization."@en .
+
+rov:orgType a owl:ObjectProperty ;
+  rdfs:label "organization type"@en ;
+  rdfs:comment "The legal form of the organization."@en .
+
+rov:orgStatus a owl:ObjectProperty ;
+  rdfs:label "organization status"@en ;
+  rdfs:comment "The operational status of the organization."@en .
+
+rov:orgActivity a owl:ObjectProperty ;
+  rdfs:label "economic activity"@en ;
+  rdfs:comment "The NACE economic activity classification."@en .
+
+rov:registration a owl:ObjectProperty ;
+  rdfs:range adms:Identifier ;
+  rdfs:label "registration"@en ;
+  rdfs:comment "The official registration identifier that confers legal status."@en .
+
+org:hasUnit a owl:ObjectProperty ;
+  rdfs:label "has unit"@en ;
+  rdfs:domain org:Organization ;
+  rdfs:range org:OrganizationalUnit ;
+  rdfs:comment "Indicates a unit which is part of this organization."@en .
+
+org:unitOf a owl:ObjectProperty ;
+  rdfs:label "unit of"@en ;
+  rdfs:domain org:OrganizationalUnit ;
+  rdfs:range org:Organization ;
+  owl:inverseOf org:hasUnit ;
+  rdfs:comment "Indicates the organization of which this unit is a part."@en .
+
+# ADMS
+adms:Identifier a owl:Class ;
+  rdfs:label "Identifier (ADMS)"@en ;
+  rdfs:comment "An identifier of an entity according to some identifier system."@en .
+
+adms:identifier a owl:ObjectProperty ;
+  rdfs:range adms:Identifier ;
+  rdfs:label "identifier"@en ;
+  rdfs:comment "Links an agent to an external identifier. The identifying system is given by dcterms:type, a ccv:IdentifierScheme concept."@en .
+
+skos:notation a owl:DatatypeProperty ;
+  rdfs:label "notation"@en ;
+  rdfs:comment "The literal value of an identifier or classification code."@en .
+
+skos:altLabel a owl:DatatypeProperty ;
+  rdfs:label "alternate label"@en ;
+  rdfs:comment "An alternative or trading name for a resource."@en .
+
+dcterms:type a owl:ObjectProperty ;
+  rdfs:label "type"@en ;
+  rdfs:comment "On an adms:Identifier, the scheme it belongs to — a ccv:IdentifierScheme concept (ccv:SLACK, ccv:GITHUB)."@en .
+
+dcterms:source a owl:ObjectProperty ;
+  rdfs:range skos:Concept ;
+  rdfs:label "source"@en ;
+  rdfs:comment "The origin of a record — a ccv:ImportSource concept (ccv:SLACK, ccv:GITHUB, ccv:MANUAL, ccv:DERIVED). Set by the sync pipeline to track provenance."@en .
+
+foaf:page a owl:ObjectProperty ;
+  rdfs:label "page"@en ;
+  rdfs:comment "A web page for the resource — on a GitHub adms:Identifier, the account's profile URL (https://github.com/{login})."@en .
+
+# DOAP
+doap:Project a owl:Class ;
+  rdfs:label "Software Project (DOAP)"@en ;
+  rdfs:comment "A software project."@en .
+
+doap:name a owl:DatatypeProperty ;
+  rdfs:label "name"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:string .
+
+doap:description a owl:DatatypeProperty ;
+  rdfs:label "description"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:string .
+
+doap:repository a owl:DatatypeProperty ;
+  rdfs:label "repository"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:anyURI .
+
+doap:wiki a owl:DatatypeProperty ;
+  rdfs:label "wiki"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:anyURI .
+
+doap:homepage a owl:DatatypeProperty ;
+  rdfs:label "homepage"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:anyURI .
+
+doap:created a owl:DatatypeProperty ;
+  rdfs:label "created"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:date ;
+  rdfs:comment "Date when the project was created or initiated."@en .
+
+doap:documentation a owl:DatatypeProperty ;
+  rdfs:label "documentation"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "URL of project documentation."@en .
+
+doap:bug-database a owl:DatatypeProperty ;
+  rdfs:label "bug database"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "Bug tracker or issue tracker for the project."@en .
+
+doap:license a owl:DatatypeProperty ;
+  rdfs:label "license"@en ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "The URI of an RDF description of the license the software is distributed under, as a SPDX reference."@en .
+
+doap:programming-language a owl:DatatypeProperty ;
+  rdfs:label "programming language"@en ;
+  rdfs:domain doap:Project ;
+  rdfs:range xsd:string ;
+  rdfs:comment "Programming language a project is implemented in or primarily uses. Synced automatically from GitHub."@en .
+
+# LOCN
+locn:thoroughfare a owl:DatatypeProperty ;
+  rdfs:label "thoroughfare"@en ;
+  rdfs:comment "The street name and number."@en .
+
+locn:postCode a owl:DatatypeProperty ;
+  rdfs:label "post code"@en .
+
+locn:postName a owl:DatatypeProperty ;
+  rdfs:label "post name"@en ;
+  rdfs:comment "The city or locality name."@en .
+
+locn:adminUnitL1 a owl:ObjectProperty ;
+  rdfs:range skos:Concept ;
+  rdfs:label "admin unit L1"@en ;
+  rdfs:comment "The country or top-level administrative division, as a ccv:Country concept."@en .
+
+# ESCO
+esco:Skill a owl:Class ;
+  rdfs:label "Skill (ESCO)"@en ;
+  rdfs:comment "A skill or competency from the European Skills, Competences, Qualifications and Occupations classification."@en .
+
+esco:Occupation a owl:Class ;
+  rdfs:label "Occupation (ESCO)"@en ;
+  rdfs:comment "An occupation or job title from the European Skills, Competences, Qualifications and Occupations classification."@en .
+
+# Schema.org
+schema:description a owl:DatatypeProperty ;
+  rdfs:label "description"@en .
+
+schema:url a owl:DatatypeProperty ;
+  rdfs:label "url"@en ;
+  rdfs:range xsd:anyURI .
+
+schema:email a owl:DatatypeProperty ;
+  rdfs:label "email"@en .
+
+schema:givenName a owl:DatatypeProperty ;
+  rdfs:label "given name"@en .
+
+schema:familyName a owl:DatatypeProperty ;
+  rdfs:label "family name"@en .
+
+schema:telephone a owl:DatatypeProperty ;
+  rdfs:label "telephone"@en .
+
+schema:foundingDate a owl:DatatypeProperty ;
+  rdfs:label "founding date"@en ;
+  rdfs:comment "The date the organization was created."@en .
+
+schema:sameAs a owl:DatatypeProperty ;
+  rdfs:label "same as"@en ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "Links to external identifiers such as LinkedIn and ORCID."@en .
+
+schema:Person a owl:Class ;
+  rdfs:label "Person (Schema.org)"@en ;
+  rdfs:comment "A person (alive, dead, undead, or fictional)."@en .
+
+schema:EducationalOccupationalCredential a owl:Class ;
+  rdfs:label "Educational Occupational Credential (Schema.org)"@en ;
+  rdfs:comment "A credential awarded for educational achievement or occupational competence."@en .
+
+schema:image a owl:DatatypeProperty ;
+  rdfs:label "image"@en ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "An image or photo URL."@en .
+
+schema:keywords a owl:DatatypeProperty ;
+  rdfs:label "keywords"@en ;
+  rdfs:comment "Tags or topics describing a resource. On a cc:Project, the GitHub repository topics. Synced automatically from GitHub."@en .
+
+schema:dateModified a owl:DatatypeProperty ;
+  rdfs:range xsd:date ;
+  rdfs:label "date modified"@en ;
+  rdfs:comment "The date a resource was last modified. On a cc:Project, the date of the last push to the GitHub repository. Synced automatically from GitHub."@en .
+
+schema:startDate a owl:DatatypeProperty ;
+  rdfs:label "start date"@en ;
+  rdfs:range xsd:date ;
+  rdfs:comment "The start date of a temporal interval (employment, engagement, or contribution)."@en .
+
+schema:endDate a owl:DatatypeProperty ;
+  rdfs:label "end date"@en ;
+  rdfs:range xsd:date ;
+  rdfs:comment "The end date or expiry date of a temporal interval."@en .
+
+schema:birthDate a owl:DatatypeProperty ;
+  rdfs:label "birth date"@en ;
+  rdfs:range xsd:date ;
+  rdfs:comment "The date of birth of a person."@en .
+
+# Form Annotation Properties
+
+cc:createOnly a owl:AnnotationProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "create only"@en ;
+  rdfs:comment "When true on a sh:property shape, the field is a sub-entity (no search input, only create-new button, hidden when creating the parent entity)."@en .
+
+cc:noCreate a owl:AnnotationProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "no create"@en ;
+  rdfs:comment "When true on a sh:property shape, the field is a reference or back-link (search shown, no create-new button)."@en .
+
+cc:conceptScheme a owl:AnnotationProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "concept scheme"@en ;
+  rdfs:comment "On a sh:property shape with sh:class skos:Concept, declares the SKOS concept scheme URI to fetch options from. Replaces the hardcoded property-to-scheme mapping in application config."@en .
+
+cc:identifierPart a owl:AnnotationProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "identifier part"@en ;
+  rdfs:comment "Boolean flag on a sh:property shape. When true, this property contributes to URI minting for new instances. Properties are combined in sh:order sequence. String values are used as-is; URI values use the local name."@en .
+
+cc:computed a owl:AnnotationProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "computed"@en ;
+  rdfs:comment "Boolean flag on a sh:property shape. When true, the field is derived or synced and shown read-only in the form, not user-editable."@en .
+
+# Classes
+
+cc:Organization a owl:Class ;
+  rdfs:subClassOf rov:RegisteredOrganization ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Organization"@en ;
+  rdfs:comment "An enterprise, consultancy, client, or partner organization."@en .
+
+cc:Person a owl:Class ;
+  rdfs:subClassOf schema:Person , foaf:Agent ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Person"@en ;
+  rdfs:comment "An individual person, typically an employee, consultant, or contact."@en .
+
+cc:Employment a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Employment"@en ;
+  rdfs:comment "A person's employment or engagement with an organization. Captures role, dates, rate, and status per org."@en .
+
+cc:Engagement a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Engagement"@en ;
+  rdfs:comment "A business relationship between two organizations, with temporal metadata."@en .
+
+cc:CertificationType a owl:Class ;
+  rdfs:subClassOf schema:EducationalOccupationalCredential ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Certification Type"@en ;
+  rdfs:comment "An abstract certification program or standard. Describes what the certification is, who issues it, and where to find it; shared across all holders."@en .
+
+cc:Certification a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Certification"@en ;
+  rdfs:comment "A specific certification holding: records that a particular person or organization holds a CertificationType, with issue/expiry dates, level, and credential ID. Use cc:PersonalCertification or cc:OrganizationalCertification."@en .
+
+cc:PersonalCertification a owl:Class ;
+  rdfs:subClassOf cc:Certification ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Personal Certification"@en ;
+  rdfs:comment "A certification holding by an individual person."@en .
+
+cc:OrganizationalCertification a owl:Class ;
+  rdfs:subClassOf cc:Certification ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Organizational Certification"@en ;
+  rdfs:comment "A certification or accreditation holding by an organization."@en .
+
+cc:PersonalCertification owl:disjointWith cc:OrganizationalCertification .
+
+cc:Project a owl:Class ;
+  rdfs:subClassOf doap:Project ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Project"@en ;
+  rdfs:comment "A project undertaken by an organization, typically for a client."@en .
+
+cc:Team a owl:Class ;
+  rdfs:subClassOf org:OrganizationalUnit ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Team"@en ;
+  rdfs:comment "An internal team, unit, or department within an organization."@en .
+
+cc:TeamMembership a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Team Membership"@en ;
+  rdfs:comment "A reified relationship capturing a person's membership in a team, with start/end dates and role (leader/manager/member)."@en .
+
+cc:ProjectContribution a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Project Contribution"@en ;
+  rdfs:comment "A reified relationship capturing a person's contribution to a specific project, including the role they played."@en .
+
+cc:SkillAssessment a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Skill Assessment"@en ;
+  rdfs:comment "A reified relationship capturing a person's self-assessed or verified proficiency in a specific skill, including proficiency level and years of experience."@en .
+
+cc:LanguageSkill a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Language Skill"@en ;
+  rdfs:comment "A reified relationship capturing a person's proficiency in a language, with the CEFR level (A1–C2)."@en .
+
+cc:Office a owl:Class ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:label "Office"@en ;
+  rdfs:comment "A physical office location of an organization, with its own address."@en .
+
+[] a owl:AllDisjointClasses ;
+  owl:members (
+    cc:Person
+    cc:Organization
+    cc:Project
+    cc:Team
+    cc:Employment
+    cc:Engagement
+    cc:CertificationType
+    cc:Certification
+    cc:ProjectContribution
+    cc:SkillAssessment
+    cc:LanguageSkill
+    cc:TeamMembership
+    cc:Office
+  ) .
+
+# Employment Model
+
+cc:hasEmployment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:Employment ;
+  owl:inverseOf cc:employmentOf ;
+  rdfs:label "has employment"@en ;
+  rdfs:comment "A person's employment record at an organization."@en .
+
+cc:employmentOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Employment ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:hasEmployment ;
+  rdfs:label "employment of"@en ;
+  rdfs:comment "The person in this employment."@en .
+
+cc:employmentWith a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Employment ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:employs ;
+  rdfs:label "employment with"@en ;
+  rdfs:comment "The organization employing the person."@en .
+
+cc:employs a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Employment ;
+  owl:inverseOf cc:employmentWith ;
+  rdfs:label "employs"@en ;
+  rdfs:comment "Employment records where this organization is the employer."@en .
+
+cc:employmentType a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Employment ;
+  rdfs:range skos:Concept ;
+  rdfs:label "employment type"@en ;
+  rdfs:comment "The type of employment: full-time, part-time, contractor, or freelancer."@en .
+
+cc:employmentRole a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Employment ;
+  rdfs:range esco:Occupation ;
+  rdfs:label "employment role"@en ;
+  rdfs:comment "Job title or role within the organization, from the ESCO Occupations taxonomy."@en .
+
+cc:employmentRate a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Employment ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "employment rate"@en ;
+  rdfs:comment "Hourly or daily rate for this employment."@en .
+
+cc:availabilityStatus a owl:ObjectProperty, owl:FunctionalProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range skos:Concept ;
+  rdfs:label "availability status"@en ;
+  rdfs:comment "Current availability status of the person: available, on project, or on leave."@en .
+
+cc:seniorityLevel a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Employment ;
+  rdfs:range skos:Concept ;
+  rdfs:label "seniority level"@en ;
+  rdfs:comment "The person's seniority level: junior, mid-level, senior, lead, or principal."@en .
+
+# Engagement Properties
+
+cc:hasEngagement a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Engagement ;
+  owl:inverseOf cc:engagementOf ;
+  rdfs:label "has engagement"@en ;
+  rdfs:comment "Links an organization to a business engagement."@en .
+
+cc:engagementOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Engagement ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:hasEngagement ;
+  rdfs:label "engagement of"@en ;
+  rdfs:comment "The organization that has this engagement."@en .
+
+cc:engagementWith a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Engagement ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:engagedIn ;
+  rdfs:label "engagement with"@en ;
+  rdfs:comment "The other organization in the engagement (client, partner, or vendor)."@en .
+
+cc:engagedIn a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Engagement ;
+  owl:inverseOf cc:engagementWith ;
+  rdfs:label "engaged in"@en ;
+  rdfs:comment "Engagements in which this organization is the other party (client, partner, or vendor)."@en .
+
+cc:engagementType a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Engagement ;
+  rdfs:range skos:Concept ;
+  rdfs:label "engagement type"@en ;
+  rdfs:comment "The type of engagement: client, partnership, or vendor."@en .
+
+cc:engagementStatus a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Engagement ;
+  rdfs:range skos:Concept ;
+  rdfs:label "engagement status"@en ;
+  rdfs:comment "Current status: prospective, active, paused, completed, or cancelled."@en .
+
+cc:contractValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Engagement ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "contract value"@en ;
+  rdfs:comment "The total financial value of the engagement contract."@en .
+
+# Organization Properties
+
+cc:companySize a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range skos:Concept ;
+  rdfs:label "company size"@en ;
+  rdfs:comment "Classification of the organization's size."@en .
+
+cc:operatesInCountry a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range skos:Concept ;
+  rdfs:label "operates in country"@en ;
+  rdfs:comment "Countries where the organization has operations (use EU Authority Table codes)."@en .
+
+cc:offersServiceType a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range skos:Concept ;
+  rdfs:label "offers service type"@en ;
+  rdfs:comment "Types of services offered by the organization."@en .
+
+cc:numberOfEmployees a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range xsd:integer ;
+  rdfs:label "number of employees"@en ;
+  rdfs:comment "Total number of employees in the organization."@en .
+
+cc:hasOpenSourceRepo a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range xsd:anyURI ;
+  rdfs:label "has open source repository"@en ;
+  rdfs:comment "Link to an open source code repository maintained by the organization."@en .
+
+cc:recruitingContact a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Person ;
+  rdfs:label "recruiting contact"@en ;
+  rdfs:comment "Primary contact person for recruitment inquiries."@en .
+
+cc:hasOffice a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Office ;
+  owl:inverseOf cc:officeOf ;
+  rdfs:label "has office"@en ;
+  rdfs:comment "Links an organization to one of its physical office locations."@en .
+
+cc:officeOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Office ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:hasOffice ;
+  rdfs:label "office of"@en ;
+  rdfs:comment "Links an office to the organization it belongs to."@en .
+
+cc:industrySector a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range skos:Concept ;
+  rdfs:label "industry sector"@en ;
+  rdfs:comment "High-level industry sector. For granular NACE classification use rov:orgActivity."@en .
+
+cc:hasProject a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Project ;
+  owl:inverseOf cc:projectOf ;
+  rdfs:label "has project"@en ;
+  rdfs:comment "A project executed or owned by this organization."@en .
+
+cc:projectOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:hasProject ;
+  rdfs:label "project of"@en ;
+  rdfs:comment "The organization that owns or executes this project."@en .
+
+cc:hasTeam a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:subPropertyOf org:hasUnit ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Team ;
+  owl:inverseOf cc:teamOf ;
+  rdfs:label "has team"@en ;
+  rdfs:comment "A team within the organization."@en .
+
+cc:teamOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:subPropertyOf org:unitOf ;
+  rdfs:domain cc:Team ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:hasTeam ;
+  rdfs:label "team of"@en ;
+  rdfs:comment "The organization this team belongs to."@en .
+
+# CertificationType properties
+
+cc:certificationName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:CertificationType ;
+  rdfs:range xsd:string ;
+  rdfs:label "certification name"@en ;
+  rdfs:comment "The full name of the certification program."@en .
+
+cc:issuedBy a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:CertificationType ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:issues ;
+  rdfs:label "issued by"@en ;
+  rdfs:comment "The organization that offers and issues this certification program."@en .
+
+cc:issues a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:CertificationType ;
+  owl:inverseOf cc:issuedBy ;
+  rdfs:label "issues"@en ;
+  rdfs:comment "Certification programs issued by this organization."@en .
+
+# Certification holding properties
+
+cc:certificationOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Certification ;
+  rdfs:range cc:CertificationType ;
+  owl:inverseOf cc:certificationHeldAs ;
+  rdfs:label "certification of"@en ;
+  rdfs:comment "The certification program (type) that this holding refers to."@en .
+
+cc:certificationHeldAs a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:CertificationType ;
+  rdfs:range cc:Certification ;
+  owl:inverseOf cc:certificationOf ;
+  rdfs:label "certification held as"@en ;
+  rdfs:comment "A specific holding of this certification program."@en .
+
+cc:hasPersonalCertification a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:PersonalCertification ;
+  owl:inverseOf cc:personalCertificationOf ;
+  rdfs:label "has personal certification"@en ;
+  rdfs:comment "A professional certification holding by a person."@en .
+
+cc:personalCertificationOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:PersonalCertification ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:hasPersonalCertification ;
+  rdfs:label "personal certification of"@en ;
+  rdfs:comment "The person who holds this certification."@en .
+
+cc:hasOrganizationalCertification a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:OrganizationalCertification ;
+  owl:inverseOf cc:organizationalCertificationOf ;
+  rdfs:label "has organizational certification"@en ;
+  rdfs:comment "A certification or accreditation holding by the organization."@en .
+
+cc:organizationalCertificationOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:OrganizationalCertification ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:hasOrganizationalCertification ;
+  rdfs:label "organizational certification of"@en ;
+  rdfs:comment "The organization that holds this certification."@en .
+
+cc:certificationLevel a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Certification ;
+  rdfs:range skos:Concept ;
+  rdfs:label "certification level"@en ;
+  rdfs:comment "The proficiency level achieved by this holder: associate, professional, expert, or master."@en .
+
+cc:credentialId a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Certification ;
+  rdfs:range xsd:string ;
+  rdfs:label "credential ID"@en ;
+  rdfs:comment "The unique badge or credential ID assigned to this specific holder."@en .
+
+cc:certificationUrl a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Certification ;
+  rdfs:range xsd:anyURI ;
+  rdfs:label "certification URL"@en ;
+  rdfs:comment "URL to verify or view this specific holding online."@en .
+
+# Project Properties
+
+cc:projectStatus a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range skos:Concept ;
+  rdfs:label "project status"@en ;
+  rdfs:comment "Current status: ongoing, completed, paused or cancelled."@en .
+
+cc:projectType a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range skos:Concept ;
+  rdfs:label "project type"@en ;
+  rdfs:comment "Classifies the project as client-commissioned, internal, open-source, or R&D."@en .
+
+cc:requestedBy a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range cc:Organization ;
+  owl:inverseOf cc:requestedProject ;
+  rdfs:label "requested by"@en ;
+  rdfs:comment "The client organization that requested the project."@en .
+
+cc:requestedProject a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Organization ;
+  rdfs:range cc:Project ;
+  owl:inverseOf cc:requestedBy ;
+  rdfs:label "requested project"@en ;
+  rdfs:comment "A project requested by this organization."@en .
+
+cc:developedBy a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range cc:Team ;
+  owl:inverseOf cc:developsProject ;
+  rdfs:label "developed by"@en ;
+  rdfs:comment "The team responsible for developing the project."@en .
+
+cc:developsProject a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Team ;
+  rdfs:range cc:Project ;
+  owl:inverseOf cc:developedBy ;
+  rdfs:label "develops project"@en ;
+  rdfs:comment "A project developed by this team."@en .
+
+cc:usesTechnology a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range esco:Skill ;
+  rdfs:label "uses technology"@en ;
+  rdfs:comment "Technologies and frameworks used in the project."@en .
+
+cc:projectManager a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:managesProject ;
+  rdfs:label "project manager"@en ;
+  rdfs:comment "The person managing the project."@en .
+
+cc:managesProject a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:Project ;
+  owl:inverseOf cc:projectManager ;
+  rdfs:label "manages project"@en ;
+  rdfs:comment "A project managed by this person."@en .
+
+
+cc:hasProductionApp a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range xsd:anyURI ;
+  rdfs:label "has production application"@en ;
+  rdfs:comment "Link to the live/production application."@en .
+
+cc:projectDomain a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range skos:Concept ;
+  rdfs:label "project domain"@en ;
+  rdfs:comment "The industry domain the project serves. Distinct from the executing organization's industry sector."@en .
+
+cc:confidentialityLevel a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range skos:Concept ;
+  rdfs:label "confidentiality level"@en ;
+  rdfs:comment "Controls visibility of project information: public, internal, or confidential."@en .
+
+cc:targetCountry a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range skos:Concept ;
+  rdfs:label "target country"@en ;
+  rdfs:comment "Countries where the project is deployed or used."@en .
+
+cc:projectBudget a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "project budget"@en ;
+  rdfs:comment "The allocated budget for the project."@en .
+
+cc:projectEffort a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range xsd:integer ;
+  rdfs:label "project effort"@en ;
+  rdfs:comment "Estimated or actual effort in person-days."@en .
+
+
+# GitHub Enrichment Properties
+
+cc:workedFor a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:Organization ;
+  rdfs:label "worked for"@en ;
+  rdfs:comment "Inferred client organisations this person has contributed to via project work. Computed from GitHub contribution data; no inverse (computed, read-only)."@en .
+
+cc:lastCommitDate a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range xsd:date ;
+  rdfs:label "last commit date"@en ;
+  rdfs:comment "Date of the most recent commit in this contribution. Sourced from the GitHub stats API."@en .
+
+cc:commitCount a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range xsd:integer ;
+  rdfs:label "commit count"@en ;
+  rdfs:comment "Number of commits this person made to the project's GitHub repository. Sourced from the GitHub API."@en .
+
+# Project Contribution Properties
+
+cc:hasProjectContribution a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:ProjectContribution ;
+  owl:inverseOf cc:contributionBy ;
+  rdfs:label "has project contribution"@en ;
+  rdfs:comment "A contribution this person made to a project."@en .
+
+cc:contributionBy a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:hasProjectContribution ;
+  rdfs:label "contribution by"@en ;
+  rdfs:comment "The person who made this contribution."@en .
+
+cc:contributionTo a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range cc:Project ;
+  owl:inverseOf cc:projectHasContribution ;
+  rdfs:label "contribution to"@en ;
+  rdfs:comment "The project this contribution was made to."@en .
+
+cc:projectHasContribution a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range cc:ProjectContribution ;
+  owl:inverseOf cc:contributionTo ;
+  rdfs:label "project has contribution"@en ;
+  rdfs:comment "A contribution made to this project."@en .
+
+cc:contributionRole a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range skos:Concept ;
+  rdfs:label "contribution role"@en ;
+  rdfs:comment "The role played in this contribution."@en .
+
+cc:contributionDescription a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range xsd:string ;
+  rdfs:label "contribution description"@en ;
+  rdfs:comment "A description of the specific work done in this contribution. Useful for CV generation and portfolio presentation."@en .
+
+cc:prReviewCount a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range xsd:integer ;
+  rdfs:label "PR review count"@en ;
+  rdfs:comment "Number of pull requests reviewed by this person on the project repository. Sourced from the GitHub API. High review count relative to commit count is a signal of senior or mentoring activity."@en .
+
+cc:mergedPrCount a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range xsd:integer ;
+  rdfs:label "merged PR count"@en ;
+  rdfs:comment "Number of pull requests authored and merged by this person on the project repository. Sourced from the GitHub API. Measures completed deliverables as opposed to raw commit volume."@en .
+
+cc:linesAdded a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range xsd:integer ;
+  rdfs:label "lines added"@en ;
+  rdfs:comment "Total lines of code added by this person in the project repository across all commits. Sourced from the GitHub stats API."@en .
+
+cc:linesDeleted a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:ProjectContribution ;
+  rdfs:range xsd:integer ;
+  rdfs:label "lines deleted"@en ;
+  rdfs:comment "Total lines of code deleted by this person in the project repository across all commits. Sourced from the GitHub stats API."@en .
+
+cc:isArchived a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Project ;
+  rdfs:range xsd:boolean ;
+  rdfs:label "is archived"@en ;
+  rdfs:comment "Whether the GitHub repository backing this project has been archived. Archived repositories are read-only; this signals a completed or abandoned project. Synced automatically from GitHub."@en .
+
+# Skill Assessment Properties
+
+cc:hasSkillAssessment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:SkillAssessment ;
+  owl:inverseOf cc:skillAssessmentOf ;
+  rdfs:label "has skill assessment"@en ;
+  rdfs:comment "A structured proficiency assessment for a specific skill."@en .
+
+cc:skillAssessmentOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:SkillAssessment ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:hasSkillAssessment ;
+  rdfs:label "skill assessment of"@en ;
+  rdfs:comment "The person this skill assessment belongs to."@en .
+
+cc:assessedSkill a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:SkillAssessment ;
+  rdfs:range esco:Skill ;
+  rdfs:label "assessed skill"@en ;
+  rdfs:comment "The ESCO skill being assessed."@en .
+
+cc:proficiencyLevel a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:SkillAssessment ;
+  rdfs:range skos:Concept ;
+  rdfs:label "proficiency level"@en ;
+  rdfs:comment "The proficiency level for this skill: beginner, intermediate, advanced, or expert."@en .
+
+cc:yearsOfExperience a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:SkillAssessment ;
+  rdfs:range xsd:integer ;
+  rdfs:label "years of experience"@en ;
+  rdfs:comment "Number of years of practical experience with this skill."@en .
+
+# Language Skill Properties
+
+cc:hasLanguageSkill a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:LanguageSkill ;
+  owl:inverseOf cc:languageSkillOf ;
+  rdfs:label "has language skill"@en ;
+  rdfs:comment "A language a person speaks, with its CEFR level."@en .
+
+cc:languageSkillOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:LanguageSkill ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:hasLanguageSkill ;
+  rdfs:label "language skill of"@en ;
+  rdfs:comment "The person this language skill belongs to."@en .
+
+cc:languageSpoken a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:LanguageSkill ;
+  rdfs:range skos:Concept ;
+  rdfs:label "language spoken"@en ;
+  rdfs:comment "The language (an EU authority ccv:Language concept)."@en .
+
+cc:languageLevel a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:LanguageSkill ;
+  rdfs:range skos:Concept ;
+  rdfs:label "language level"@en ;
+  rdfs:comment "The CEFR proficiency level for this language: A1, A2, B1, B2, C1, or C2 (a ccv:CefrLevel concept)."@en .
+
+# Team Properties
+
+cc:teamName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Team ;
+  rdfs:range xsd:string ;
+  rdfs:label "team name"@en ;
+  rdfs:comment "The name of the team."@en .
+
+cc:teamType a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Team ;
+  rdfs:range skos:Concept ;
+  rdfs:label "team type"@en ;
+  rdfs:comment "The functional type of the team: development, QA, design, DevOps, or data."@en .
+
+cc:teamDescription a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Team ;
+  rdfs:range xsd:string ;
+  rdfs:label "team description"@en ;
+  rdfs:comment "A description of the team's focus and responsibilities."@en .
+
+# Team Membership Properties
+
+cc:hasTeamMembership a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:TeamMembership ;
+  owl:inverseOf cc:membershipOf ;
+  rdfs:label "has team membership"@en ;
+  rdfs:comment "A team membership held by this person."@en .
+
+cc:membershipOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:TeamMembership ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:hasTeamMembership ;
+  rdfs:label "membership of"@en ;
+  rdfs:comment "The person who holds this team membership."@en .
+
+cc:membershipIn a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:TeamMembership ;
+  rdfs:range cc:Team ;
+  owl:inverseOf cc:teamHasMembership ;
+  rdfs:label "membership in"@en ;
+  rdfs:comment "The team in which this membership is held."@en .
+
+cc:teamHasMembership a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Team ;
+  rdfs:range cc:TeamMembership ;
+  owl:inverseOf cc:membershipIn ;
+  rdfs:label "team has membership"@en ;
+  rdfs:comment "A membership record held against this team."@en .
+
+cc:membershipRole a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:TeamMembership ;
+  rdfs:range skos:Concept ;
+  rdfs:label "membership role"@en ;
+  rdfs:comment "The role this person plays in the team: leader, manager, or regular member."@en .
+
+# Person Properties
+
+
+
+cc:mentoredBy a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:mentors ;
+  rdfs:label "mentored by"@en ;
+  rdfs:comment "A person who mentors this person."@en .
+
+cc:mentors a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range cc:Person ;
+  owl:inverseOf cc:mentoredBy ;
+  rdfs:label "mentors"@en ;
+  rdfs:comment "A person mentored by this person."@en .
+
+cc:nationality a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range skos:Concept ;
+  rdfs:label "nationality"@en ;
+  rdfs:comment "The nationality or nationalities of the person (ISO 3166-1 country codes via ccv:Country)."@en .
+
+cc:basedInCity a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:domain cc:Person ;
+  rdfs:range xsd:string ;
+  rdfs:label "based in city"@en ;
+  rdfs:comment "The city where this person is primarily based."@en .
+
+cc:workLocation a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://ontology.cogni.zone/company-card#> ;
+  rdfs:range skos:Concept ;
+  rdfs:label "work location"@en ;
+  rdfs:comment "Work modality: remote, hybrid, on-site, or client-site. Used on Person (preference) and Employment (per contract)."@en .

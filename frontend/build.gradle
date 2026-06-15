@@ -1,0 +1,42 @@
+plugins {
+  id("com.github.node-gradle.node") version "3.2.1"
+}
+
+/*
+tasks.named<Jar>("jar") {
+  enabled = false
+}
+*/
+
+/*
+tasks.named<Jar>("bootJar") {
+  enabled = false
+}
+*/
+
+node {
+  version.set("20.15.1")
+  npmVersion.set("10.8.2")
+  download.set(true)
+}
+
+/*
+tasks.register<com.github.gradle.node.npm.task.NpmTask>("npmInstall") {
+  description = "Install npm dependencies"
+  group = "build"
+  args.set(listOf("install"))
+}
+
+tasks.register<com.github.gradle.node.npm.task.NpmTask>("npmBuild") {
+  description = "Build the Angular project"
+  group = "build"
+  dependsOn("npmInstall")
+  args.set(listOf("run", "build"))
+}
+
+tasks.register<Copy>("copyFrontendToBackend") {
+  dependsOn("npmBuild")
+  from("dist/frontend")
+  into("${rootProject.projectDir}/backend/src/main/resources/WEB-INF/resources")
+}
+*/

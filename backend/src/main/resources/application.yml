@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/users
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+app:
+  storage:
+    mode: memory
+    tdb2Dir: ./data/tdb2
+    sparqlUpdateEndpoint: http://localhost:3030/ds/update
+  ontology:
+    path: classpath:company-card.ttl
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
+  admin:
+    email: ${ADMIN_EMAIL:admin@localhost}
+    password: ${ADMIN_PASSWORD:admin}
+  github:
+    token: ${GITHUB_TOKEN:}
+    org: cognizone
+    internal-repos: ${GITHUB_INTERNAL_REPOS:}
+    sync:
+      enabled: true
+      cron: "0 0 0 * * MON"   # every Monday at midnight
+  slack:
+    token: ${SLACK_TOKEN:}
+    organizationUri: ${SLACK_ORG_URI:}   # URI of the cc:Organization this workspace belongs to
+
+esco:
+  api:
+    base-url: ${ESCO_API_URL:https://ec.europa.eu/esco/api}
+    default-limit: 20
+
+logging:
+  level:
+    zone.cogni.companycard: INFO
+    be.ugent.rml.records: ERROR

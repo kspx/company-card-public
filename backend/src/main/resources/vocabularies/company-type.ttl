@@ -1,0 +1,58 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:CompanyType a skos:ConceptScheme ;
+  skos:prefLabel "Company Type"@en ;
+  dcterms:description "Broad legal form categories for organisations, jurisdiction-agnostic."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:PRIVATE_LIMITED, ccv:PUBLIC_LIMITED, ccv:COOPERATIVE,
+                     ccv:PARTNERSHIP, ccv:PUBLIC_BODY, ccv:NON_PROFIT .
+
+ccv:PRIVATE_LIMITED a skos:Concept ;
+  skos:inScheme ccv:CompanyType ;
+  skos:topConceptOf ccv:CompanyType ;
+  skos:prefLabel "Private Limited Company"@en ;
+  skos:altLabel "BV"@nl, "SRL"@fr, "GmbH"@de, "Ltd"@en, "LLC"@en, "SARL"@fr ;
+  skos:definition "A company with limited liability whose shares are not publicly traded."@en ;
+  skos:notation "PRIVATE_LIMITED" .
+
+ccv:PUBLIC_LIMITED a skos:Concept ;
+  skos:inScheme ccv:CompanyType ;
+  skos:topConceptOf ccv:CompanyType ;
+  skos:prefLabel "Public Limited Company"@en ;
+  skos:altLabel "NV"@nl, "SA"@fr, "AG"@de, "PLC"@en, "Corp"@en ;
+  skos:definition "A company whose shares may be offered to the general public."@en ;
+  skos:notation "PUBLIC_LIMITED" .
+
+ccv:COOPERATIVE a skos:Concept ;
+  skos:inScheme ccv:CompanyType ;
+  skos:topConceptOf ccv:CompanyType ;
+  skos:prefLabel "Cooperative"@en ;
+  skos:altLabel "CV"@nl, "SC"@fr ;
+  skos:definition "An organisation owned and democratically controlled by its members."@en ;
+  skos:notation "COOPERATIVE" .
+
+ccv:PARTNERSHIP a skos:Concept ;
+  skos:inScheme ccv:CompanyType ;
+  skos:topConceptOf ccv:CompanyType ;
+  skos:prefLabel "Partnership"@en ;
+  skos:definition "A business structure where two or more individuals share ownership and liability."@en ;
+  skos:notation "PARTNERSHIP" .
+
+ccv:PUBLIC_BODY a skos:Concept ;
+  skos:inScheme ccv:CompanyType ;
+  skos:topConceptOf ccv:CompanyType ;
+  skos:prefLabel "Public Body"@en ;
+  skos:altLabel "Government Agency"@en, "EU Institution"@en ;
+  skos:definition "A government agency, public authority, or EU institution."@en ;
+  skos:notation "PUBLIC_BODY" .
+
+ccv:NON_PROFIT a skos:Concept ;
+  skos:inScheme ccv:CompanyType ;
+  skos:topConceptOf ccv:CompanyType ;
+  skos:prefLabel "Non-profit"@en ;
+  skos:altLabel "Association"@en, "Foundation"@en, "VZW"@nl, "ASBL"@fr ;
+  skos:definition "An organisation that does not distribute profits to its members."@en ;
+  skos:notation "NON_PROFIT" .

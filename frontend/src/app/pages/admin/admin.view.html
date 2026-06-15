@@ -1,0 +1,244 @@
+<div class="admin-container">
+    <div class="admin-header">
+        <h2>User Management</h2>
+        <button class="btn btn-outline-secondary btn-sm" (click)="back()">Back</button>
+    </div>
+
+    <div class="admin-section">
+        <h4>Users</h4>
+        <div *ngIf="isLoading" class="loading">Loading users...</div>
+        <div *ngIf="loadError" class="alert alert-danger">{{ loadError }}</div>
+        <div *ngIf="roleError" class="alert alert-danger">{{ roleError }}</div>
+        <div *ngIf="roleSuccess" class="alert alert-success">{{ roleSuccess }}</div>
+        <div *ngIf="resetError" class="alert alert-danger">{{ resetError }}</div>
+        <div *ngIf="resetSuccess" class="alert alert-success">{{ resetSuccess }}</div>
+
+        <div *ngIf="!isLoading && !loadError && users.length === 0" class="empty-state">
+            No users found.
+        </div>
+
+        <table *ngIf="!isLoading && !loadError && users.length > 0" class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Profile linked</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let user of users">
+                    <tr>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <div class="role-cell">
+                                <select class="form-control form-control-sm"
+                                        [(ngModel)]="editingRoles[user.email]"
+                                        [name]="'role-' + user.email"
+                                        [disabled]="user.email === currentEmail">
+                                    <option value="USER">USER</option>
+                                    <option value="ADMIN">ADMIN</option>
+                                </select>
+                                <button class="btn btn-sm btn-outline-primary"
+                                        (click)="saveRole(user)"
+                                        [disabled]="editingRoles[user.email] === user.role || user.email === currentEmail">
+                                    Save
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <span *ngIf="user.personUri" class="linked">Yes</span>
+                            <span *ngIf="!user.personUri" class="not-linked">No</span>
+                        </td>
+                        <td>
+                            <div class="action-cell">
+                                <button class="btn btn-sm btn-outline-secondary"
+                                        (click)="toggleReset(user.email)">
+                                    {{ showReset[user.email] ? 'Cancel' : 'Reset Password' }}
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm"
+                                        (click)="deleteUser(user.email)"
+                                        [disabled]="user.email === currentEmail">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="showReset[user.email]" class="reset-row">
+                        <td colspan="4">
+                            <div class="reset-form">
+                                <label>New password for <strong>{{ user.email }}</strong></label>
+                                <div class="reset-inputs">
+                                    <input type="password"
+                                           class="form-control form-control-sm"
+                                           [(ngModel)]="resetForms[user.email]"
+                                           [name]="'reset-' + user.email"
+                                           placeholder="Min. 6 characters"
+                                           minlength="6" />
+                                    <button class="btn btn-sm btn-primary"
+                                            (click)="saveReset(user.email)"
+                                            [disabled]="(resetForms[user.email] || '').length < 6">
+                                        Set Password
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="admin-section">
+        <h4>GitHub Sync</h4>
+        <p class="sync-description">
+            Pulls data from the GitHub organisation into the knowledge graph.
+            Start with <strong>Members</strong> and <strong>Repos</strong>, then run <strong>Stats</strong> since contributions depend on the people and projects from those two steps.
+            <strong>Engagements</strong> should run after Stats, and <strong>Worked For</strong> derives the person-to-client connections.
+            <strong>Lifecycle</strong> closes out engagements that have gone quiet.
+        </p>
+        <div class="sync-grid">
+            <div class="sync-card">
+                <div class="sync-card-title">Members</div>
+                <div class="sync-card-desc">Creates a <code>cc:Person</code> for each org member with their name, GitHub profile and avatar.</div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('github/sync/members')"
+                        [disabled]="syncStatus['github/sync/members'] === 'running'">
+                    {{ syncStatus['github/sync/members'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['github/sync/members'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['github/sync/members'] === 'error'" class="sync-err">Error</span>
+            </div>
+
+            <div class="sync-card">
+                <div class="sync-card-title">Repos</div>
+                <div class="sync-card-desc">Creates a <code>cc:Project</code> for each repo with its name, description, URL, languages and topics.</div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('github/sync/repos')"
+                        [disabled]="syncStatus['github/sync/repos'] === 'running'">
+                    {{ syncStatus['github/sync/repos'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['github/sync/repos'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['github/sync/repos'] === 'error'" class="sync-err">Error</span>
+            </div>
+
+            <div class="sync-card">
+                <div class="sync-card-title">Stats</div>
+                <div class="sync-card-desc">Updates contribution counts per person per project: commits, PR reviews, merged PRs and lines added.</div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('github/sync/stats')"
+                        [disabled]="syncStatus['github/sync/stats'] === 'running'">
+                    {{ syncStatus['github/sync/stats'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['github/sync/stats'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['github/sync/stats'] === 'error'" class="sync-err">Error</span>
+            </div>
+
+            <div class="sync-card">
+                <div class="sync-card-title">Engagements</div>
+                <div class="sync-card-desc">Creates one <code>cc:Engagement</code> per client org, dated from their earliest project or contribution. Slack sync and Stats need to have run at least once first.</div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('github/sync/engagements')"
+                        [disabled]="syncStatus['github/sync/engagements'] === 'running'">
+                    {{ syncStatus['github/sync/engagements'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['github/sync/engagements'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['github/sync/engagements'] === 'error'" class="sync-err">Error</span>
+            </div>
+
+            <div class="sync-card">
+                <div class="sync-card-title">Worked For</div>
+                <div class="sync-card-desc">Adds <code>cc:workedFor</code> links connecting each person to the client organisations they contributed to through GitHub project work.</div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('github/sync/workedfor')"
+                        [disabled]="syncStatus['github/sync/workedfor'] === 'running'">
+                    {{ syncStatus['github/sync/workedfor'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['github/sync/workedfor'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['github/sync/workedfor'] === 'error'" class="sync-err">Error</span>
+            </div>
+
+            <div class="sync-card">
+                <div class="sync-card-title">Lifecycle</div>
+                <div class="sync-card-desc">Marks engagements as <code>ENG_COMPLETED</code> when there have been no commits to a client's projects in over 12 months.</div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('github/sync/lifecycle')"
+                        [disabled]="syncStatus['github/sync/lifecycle'] === 'running'">
+                    {{ syncStatus['github/sync/lifecycle'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['github/sync/lifecycle'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['github/sync/lifecycle'] === 'error'" class="sync-err">Error</span>
+            </div>
+
+            <div class="sync-card sync-card-full">
+                <div class="sync-card-title">Full Sync</div>
+                <div class="sync-card-desc">Runs the complete pipeline in dependency order: seed organisations → Slack → GitHub (members, repos, stats, engagements, worked-for, lifecycle). Use this for a proper end-to-end sync — engagements need the Slack-sourced organisation, so GitHub alone is not enough.</div>
+                <button class="btn btn-sm btn-primary"
+                        (click)="triggerSync('sync/all')"
+                        [disabled]="syncStatus['sync/all'] === 'running'">
+                    {{ syncStatus['sync/all'] === 'running' ? 'Running…' : 'Run All' }}
+                </button>
+                <span *ngIf="syncStatus['sync/all'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['sync/all'] === 'error'" class="sync-err">Error</span>
+            </div>
+        </div>
+        <p class="sync-note">All operations run in the background. "Started" means the job was accepted, not that it has finished. Check backend logs for progress.</p>
+
+        <div *ngIf="skippedRepos.length > 0" class="skipped-repos">
+            <strong>Stats incomplete for these repos.</strong> GitHub was still computing stats when the sync ran.
+            Click <em>Stats</em> again to retry.
+            <ul>
+                <li *ngFor="let repo of skippedRepos">{{ repo }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <h4>Slack Sync</h4>
+        <p class="sync-description">
+            Pulls Slack workspace data into the knowledge graph.
+            Each Slack user is matched to an existing <code>cc:Person</code> by email first, then by name, and the matched person gets their Slack ID and email filled in.
+            Slack User Groups are imported as <code>cc:Team</code> instances.
+            Needs <code>app.slack.token</code> configured in <code>application.yml</code>.
+        </p>
+        <div class="sync-grid">
+            <div class="sync-card sync-card-highlight">
+                <div class="sync-card-title">Sync Slack</div>
+                <div class="sync-card-desc">
+                    Matches Slack users to <code>cc:Person</code> records and imports User Groups as <code>cc:Team</code> instances.
+                </div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('slack/sync')"
+                        [disabled]="syncStatus['slack/sync'] === 'running'">
+                    {{ syncStatus['slack/sync'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['slack/sync'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['slack/sync'] === 'error'" class="sync-err">Error — check token</span>
+            </div>
+        </div>
+        <p class="sync-note">All operations run in the background. Check backend logs for match and create counts per person.</p>
+    </div>
+
+    <div class="admin-section">
+        <h4>Seed Data</h4>
+        <p class="sync-description">
+            Loads known organisation records from the curated seed file
+            (<code>seed/known-organizations.json</code>). Safe to run multiple times since it uses upsert semantics and will not overwrite anything you have set manually.
+        </p>
+        <div class="sync-grid">
+            <div class="sync-card">
+                <div class="sync-card-title">Organizations</div>
+                <div class="sync-card-desc">Seeds 9 known client organisations (SCL, FOITT, ETF, ERA, EC, Cedefop, BMW, European Parliament) with legal name, website, type, status and founding date. ETF covers both its own and ACQF projects; EC covers ESCO, CORDIS, ELM and Qualification projects.</div>
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="triggerSync('seed/organizations')"
+                        [disabled]="syncStatus['seed/organizations'] === 'running'">
+                    {{ syncStatus['seed/organizations'] === 'running' ? 'Running…' : 'Run' }}
+                </button>
+                <span *ngIf="syncStatus['seed/organizations'] === 'done'" class="sync-ok">Started</span>
+                <span *ngIf="syncStatus['seed/organizations'] === 'error'" class="sync-err">Error</span>
+            </div>
+        </div>
+        <p class="sync-note">All operations run in the background. Check backend logs for details.</p>
+    </div>
+
+</div>

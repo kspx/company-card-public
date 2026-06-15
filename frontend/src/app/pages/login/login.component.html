@@ -1,0 +1,68 @@
+<div class="login-container">
+    <div class="login-tabs">
+        <button class="login-tab" [class.login-tab--active]="mode === 'login'" (click)="switchMode('login')">Login</button>
+        <button class="login-tab" [class.login-tab--active]="mode === 'register'" (click)="switchMode('register')">Register</button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" novalidate>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input
+                id="email"
+                name="email"
+                type="email"
+                [(ngModel)]="email"
+                required
+                placeholder="Enter your email"
+                class="form-control"
+                #emailField="ngModel"
+            />
+            <span class="field-error" *ngIf="emailField.invalid && emailField.touched">
+                Enter a valid email address.
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input
+                id="password"
+                name="password"
+                type="password"
+                [(ngModel)]="password"
+                required
+                [minlength]="mode === 'register' ? 6 : 1"
+                placeholder="Enter your password"
+                class="form-control"
+                #pwdField="ngModel"
+            />
+            <span class="field-hint" *ngIf="mode === 'register'">At least 6 characters.</span>
+            <span class="field-error" *ngIf="pwdField.invalid && pwdField.touched && mode === 'register'">
+                Password must be at least 6 characters.
+            </span>
+        </div>
+
+        <div class="form-group" *ngIf="mode === 'register'">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                [(ngModel)]="confirmPassword"
+                required
+                placeholder="Repeat your password"
+                class="form-control"
+            />
+        </div>
+
+        <div class="alert alert-warning" *ngIf="userExists">
+            An account with this email already exists.
+            <button class="alert-link-btn" (click)="switchMode('login')">Log in instead?</button>
+        </div>
+        <div class="alert alert-danger" *ngIf="error && !userExists">{{ error }}</div>
+        <div class="alert alert-success" *ngIf="success">{{ success }}</div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
+            {{ mode === 'login' ? 'Login' : 'Create Account' }}
+        </button>
+    </form>
+</div>

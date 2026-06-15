@@ -1,0 +1,42 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:CertificationLevel a skos:ConceptScheme ;
+  skos:prefLabel "Certification Level"@en ;
+  dcterms:description "Proficiency tiers for professional certifications."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:CERT_ASSOCIATE, ccv:CERT_PROFESSIONAL, ccv:CERT_EXPERT, ccv:CERT_MASTER .
+
+ccv:CERT_ASSOCIATE a skos:Concept ;
+  skos:inScheme ccv:CertificationLevel ;
+  skos:topConceptOf ccv:CertificationLevel ;
+  skos:prefLabel "Associate"@en ;
+  skos:altLabel "Foundation"@en, "Entry"@en ;
+  skos:definition "Entry-level certification demonstrating foundational knowledge."@en ;
+  skos:notation "CERT_ASSOCIATE" .
+
+ccv:CERT_PROFESSIONAL a skos:Concept ;
+  skos:inScheme ccv:CertificationLevel ;
+  skos:topConceptOf ccv:CertificationLevel ;
+  skos:prefLabel "Professional"@en ;
+  skos:altLabel "Practitioner"@en ;
+  skos:definition "Intermediate-level certification for practitioners with hands-on experience."@en ;
+  skos:notation "CERT_PROFESSIONAL" .
+
+ccv:CERT_EXPERT a skos:Concept ;
+  skos:inScheme ccv:CertificationLevel ;
+  skos:topConceptOf ccv:CertificationLevel ;
+  skos:prefLabel "Expert"@en ;
+  skos:altLabel "Advanced"@en, "Professional Advanced"@en ;
+  skos:definition "Advanced-level certification for experienced professionals."@en ;
+  skos:notation "CERT_EXPERT" .
+
+ccv:CERT_MASTER a skos:Concept ;
+  skos:inScheme ccv:CertificationLevel ;
+  skos:topConceptOf ccv:CertificationLevel ;
+  skos:prefLabel "Master"@en ;
+  skos:altLabel "Fellow"@en, "Distinguished"@en ;
+  skos:definition "Highest recognition level in a certification track, typically vendor-granted."@en ;
+  skos:notation "CERT_MASTER" .

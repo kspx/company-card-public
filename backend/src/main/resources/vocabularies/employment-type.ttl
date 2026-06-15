@@ -1,0 +1,49 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+ccv:EmploymentType a skos:ConceptScheme ;
+  skos:prefLabel "Employment Type"@en ;
+  dcterms:description "Types of employment relationships."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:FULL_TIME, ccv:PART_TIME, ccv:CONTRACTOR, ccv:FREELANCER, ccv:INTERN .
+
+ccv:FULL_TIME a skos:Concept ;
+  skos:inScheme ccv:EmploymentType ;
+  skos:topConceptOf ccv:EmploymentType ;
+  skos:prefLabel "Full-time"@en ;
+  skos:definition "Full-time permanent employment."@en ;
+  skos:notation "FULL_TIME" .
+
+ccv:PART_TIME a skos:Concept ;
+  skos:inScheme ccv:EmploymentType ;
+  skos:topConceptOf ccv:EmploymentType ;
+  skos:prefLabel "Part-time"@en ;
+  skos:definition "Part-time permanent employment."@en ;
+  skos:notation "PART_TIME" .
+
+ccv:CONTRACTOR a skos:Concept ;
+  skos:inScheme ccv:EmploymentType ;
+  skos:topConceptOf ccv:EmploymentType ;
+  skos:prefLabel "Contractor"@en ;
+  skos:altLabel "Contract Worker"@en ;
+  skos:definition "Independent contractor or consulting professional with a fixed-term contract."@en ;
+  skos:notation "CONTRACTOR" .
+
+ccv:FREELANCER a skos:Concept ;
+  skos:inScheme ccv:EmploymentType ;
+  skos:topConceptOf ccv:EmploymentType ;
+  skos:prefLabel "Freelancer"@en ;
+  skos:altLabel "Self-employed"@en ;
+  skos:definition "Freelance professional or self-employed individual."@en ;
+  skos:notation "FREELANCER" .
+
+ccv:INTERN a skos:Concept ;
+  skos:inScheme ccv:EmploymentType ;
+  skos:topConceptOf ccv:EmploymentType ;
+  skos:prefLabel "Intern"@en ;
+  skos:altLabel "Internship"@en ;
+  skos:definition "Temporary internship position, typically for students or new graduates."@en ;
+  skos:notation "INTERN" .

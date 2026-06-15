@@ -1,0 +1,50 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:EngagementStatus a skos:ConceptScheme ;
+  skos:prefLabel "Engagement Status"@en ;
+  dcterms:description "Lifecycle statuses for business engagements."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:PROSPECTIVE, ccv:ENG_ACTIVE, ccv:ENGAGEMENT_PAUSED, ccv:ENGAGEMENT_COMPLETED, ccv:ENGAGEMENT_CANCELLED .
+
+ccv:PROSPECTIVE a skos:Concept ;
+  skos:inScheme ccv:EngagementStatus ;
+  skos:topConceptOf ccv:EngagementStatus ;
+  skos:prefLabel "Prospective"@en ;
+  skos:altLabel "Pipeline"@en, "Potential"@en ;
+  skos:definition "An engagement being negotiated or planned but not yet formally agreed upon."@en ;
+  skos:notation "PROSPECTIVE" .
+
+ccv:ENG_ACTIVE a skos:Concept ;
+  skos:inScheme ccv:EngagementStatus ;
+  skos:topConceptOf ccv:EngagementStatus ;
+  skos:prefLabel "Active"@en ;
+  skos:altLabel "Ongoing"@en ;
+  skos:definition "An engagement that is currently active and ongoing."@en ;
+  skos:notation "ENG_ACTIVE" .
+
+ccv:ENGAGEMENT_PAUSED a skos:Concept ;
+  skos:inScheme ccv:EngagementStatus ;
+  skos:topConceptOf ccv:EngagementStatus ;
+  skos:prefLabel "Paused"@en ;
+  skos:altLabel "On Hold"@en, "Suspended"@en ;
+  skos:definition "An engagement temporarily paused but expected to resume."@en ;
+  skos:notation "ENGAGEMENT_PAUSED" .
+
+ccv:ENGAGEMENT_COMPLETED a skos:Concept ;
+  skos:inScheme ccv:EngagementStatus ;
+  skos:topConceptOf ccv:EngagementStatus ;
+  skos:prefLabel "Completed"@en ;
+  skos:altLabel "Finished"@en, "Concluded"@en ;
+  skos:definition "An engagement successfully completed or concluded."@en ;
+  skos:notation "ENGAGEMENT_COMPLETED" .
+
+ccv:ENGAGEMENT_CANCELLED a skos:Concept ;
+  skos:inScheme ccv:EngagementStatus ;
+  skos:topConceptOf ccv:EngagementStatus ;
+  skos:prefLabel "Cancelled"@en ;
+  skos:altLabel "Terminated"@en ;
+  skos:definition "An engagement ended prematurely or cancelled."@en ;
+  skos:notation "ENGAGEMENT_CANCELLED" .

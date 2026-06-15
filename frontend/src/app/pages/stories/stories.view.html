@@ -1,0 +1,305 @@
+<div class="stories-container">
+    <div class="stories-header">
+        <button mat-icon-button (click)="back()" matTooltip="Back">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="stories-title">
+            <h1>Data Stories</h1>
+        </div>
+        <app-public-nav />
+    </div>
+
+    <mat-tab-group animationDuration="0ms" (selectedIndexChange)="loadTab($event)">
+
+        <!-- Top Contributors -->
+        <mat-tab label="Top Contributors">
+            <ng-template matTabContent>
+                <div class="tab-content">
+                    <p class="tab-description">Who contributes the most across all projects of a client.</p>
+                    <ng-container [ngTemplateOutlet]="toolbar" [ngTemplateOutletContext]="{ s: topContributors, i: 0 }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="status"  [ngTemplateOutletContext]="{ s: topContributors }"></ng-container>
+                    @if (!topContributors.loading && !topContributors.error) {
+                        @if (topContributorsRanked.length === 0) {
+                            <p class="empty-state">No data yet, run a GitHub sync first.</p>
+                        } @else {
+                            <table class="story-table">
+                                <thead>
+                                    <tr>
+                                        <th class="rank-col">#</th>
+                                        <th>Person</th>
+                                        <th class="metric-col">Commits</th>
+                                        <th class="num-col">Reviews</th>
+                                        <th class="num-col">Merged PRs</th>
+                                        <th class="num-col">Projects</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (item of topContributorsRanked; track item.row.personUri) {
+                                        <tr>
+                                            <td class="rank-col">{{ item.rank }}</td>
+                                            <td class="person-cell">{{ item.row.personUri | anon: item.row.personName }}</td>
+                                            <td class="metric-col">
+                                                <div class="metric-row">
+                                                    <div class="metric-bar"><div class="metric-bar-fill" [style.width.%]="item.pct"></div></div>
+                                                    <span class="metric-val">{{ item.row.totalCommits }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="num-col">{{ item.row.totalReviews || '—' }}</td>
+                                            <td class="num-col">{{ item.row.totalMergedPrs || '—' }}</td>
+                                            <td class="num-col">{{ item.row.projectCount || '—' }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Cross-client Versatility -->
+        <mat-tab label="Cross-client Versatility">
+            <ng-template matTabContent>
+                <div class="tab-content">
+                    <ng-container [ngTemplateOutlet]="toolbar" [ngTemplateOutletContext]="{ s: crossClientVersatility, i: 1 }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="status"  [ngTemplateOutletContext]="{ s: crossClientVersatility }"></ng-container>
+                    @if (!crossClientVersatility.loading && !crossClientVersatility.error) {
+                        @if (versatilityRanked.length === 0) {
+                            <p class="empty-state">No client-linked contributions yet, run the sync pipeline.</p>
+                        } @else {
+                            <table class="story-table">
+                                <thead>
+                                    <tr>
+                                        <th class="rank-col">#</th>
+                                        <th>Person</th>
+                                        <th class="metric-col">Clients</th>
+                                        <th class="num-col">Projects</th>
+                                        <th>Clients served</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (item of versatilityRanked; track item.row.personUri) {
+                                        <tr>
+                                            <td class="rank-col">{{ item.rank }}</td>
+                                            <td class="person-cell">{{ item.row.personUri | anon: item.row.personName }}</td>
+                                            <td class="metric-col">
+                                                <div class="metric-row">
+                                                    <div class="metric-bar"><div class="metric-bar-fill" [style.width.%]="item.pct"></div></div>
+                                                    <span class="metric-val">{{ item.row.clientCount }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="num-col">{{ item.row.projectCount }}</td>
+                                            <td class="holders-cell">{{ item.row.clients || '—' }}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Employee Journey -->
+        <mat-tab label="Employee Journey">
+            <ng-template matTabContent>
+                <div class="tab-content">
+                    <ng-container [ngTemplateOutlet]="toolbar" [ngTemplateOutletContext]="{ s: employeeJourney, i: 2 }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="status"  [ngTemplateOutletContext]="{ s: employeeJourney }"></ng-container>
+                    @if (!employeeJourney.loading && !employeeJourney.error) {
+                        @if (journeyTracks.length === 0) {
+                            <p class="empty-state">No client-linked contributions yet, run the sync pipeline (seed → Slack → GitHub).</p>
+                        } @else {
+                            <div class="journey-legend">
+                                @for (c of journeyClients; track c.name) {
+                                    <span class="journey-legend-item">
+                                        <span class="journey-swatch" [style.background]="c.color"></span>{{ c.name }}
+                                    </span>
+                                }
+                            </div>
+                            <div class="journey">
+                                <div class="journey-axis">
+                                    @for (tick of journeyAxis; track tick.label) {
+                                        <span class="journey-axis-tick" [style.left.%]="tick.leftPct">{{ tick.label }}</span>
+                                    }
+                                </div>
+                                @for (track of journeyTracks; track track.personUri) {
+                                    <div class="journey-track">
+                                        <div class="journey-track-label" [matTooltip]="track.personUri | anon: track.personName">
+                                            <span class="journey-track-name">{{ track.personUri | anon: track.personName }}</span>
+                                            <span class="journey-track-meta">{{ track.clientCount }} client{{ track.clientCount !== 1 ? 's' : '' }} · {{ track.projectCount }} project{{ track.projectCount !== 1 ? 's' : '' }}</span>
+                                        </div>
+                                        <div class="journey-lane">
+                                            @for (seg of track.segments; track seg.projectName + seg.startDate) {
+                                                <span class="journey-seg"
+                                                      [style.left.%]="seg.leftPct" [style.width.%]="seg.widthPct"
+                                                      [style.background]="seg.color"
+                                                      [matTooltip]="seg.projectName + ' · ' + seg.clientName + ' · ' + seg.startDate + ' → ' + seg.endDate + ' · ' + seg.commitCount + ' commits'">
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="table-legend">
+                                <mat-icon style="font-size:14px;width:14px;height:14px">info</mat-icon>
+                                <span>Spans are <em>git contribution</em> dates, not HR employment dates, the graph reports
+                                      what it observed. Someone employed before their first commit, or doing non-code work,
+                                      shows a shorter or empty bar.</span>
+                            </div>
+                        }
+                    }
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Meet the Team -->
+        <mat-tab label="Meet the Team">
+            <ng-template matTabContent>
+                <div class="tab-content">
+                    <ng-container [ngTemplateOutlet]="toolbar" [ngTemplateOutletContext]="{ s: meetTheTeam, i: 3 }"></ng-container>
+                    <div class="toggle-row">
+                        <mat-slide-toggle [(ngModel)]="meetTeamActiveOnly" (change)="toggleMeetTeamActive()">
+                            Active team only
+                        </mat-slide-toggle>
+                        <span class="toggle-hint">
+                            @if (meetTeamActiveOnly) {
+                                Showing people who contributed in the last {{ activeMonths }} months.
+                                @if (meetTeamHiddenCount > 0) { <strong>{{ meetTeamHiddenCount }}</strong> past member{{ meetTeamHiddenCount !== 1 ? 's' : '' }} hidden, toggle off for full history. }
+                            } @else {
+                                Showing the full history, everyone who ever contributed, past and present.
+                            }
+                        </span>
+                    </div>
+                    <ng-container [ngTemplateOutlet]="status"  [ngTemplateOutletContext]="{ s: meetTheTeam }"></ng-container>
+                    @if (!meetTheTeam.loading && !meetTheTeam.error) {
+                        @if (groupedMeetTheTeam.length === 0) {
+                            <p class="empty-state">
+                                @if (meetTeamActiveOnly && meetTheTeam.filtered.length > 0) {
+                                    No active contributors in the last {{ activeMonths }} months, toggle off "Active team only" to see past members.
+                                } @else {
+                                    No client-linked contributions yet, run the sync pipeline (seed → Slack → GitHub).
+                                }
+                            </p>
+                        } @else {
+                            <div class="person-groups">
+                                @for (group of groupedMeetTheTeam; track group.orgUri) {
+                                    <div class="person-group">
+                                        <div class="person-group-header">
+                                            <span class="person-group-name">{{ group.clientName }}</span>
+                                            <div class="person-group-meta">
+                                                <span class="meta-stat">{{ group.members.length }} {{ group.members.length === 1 ? 'person' : 'people' }}</span>
+                                            </div>
+                                        </div>
+                                        <table class="story-table skill-subtable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Person</th>
+                                                    <th>Role</th>
+                                                    <th class="num-col">Commits</th>
+                                                    <th class="num-col">Reviews</th>
+                                                    <th>Active</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (m of group.members; track m.personUri) {
+                                                    <tr [class.row-muted]="!isActive(m.lastActivity)">
+                                                        <td class="person-cell">
+                                                            {{ m.personUri | anon: m.personName }}
+                                                            @if (!isActive(m.lastActivity)) { <span class="former-tag">former</span> }
+                                                        </td>
+                                                        <td><span class="signal-badge" [ngClass]="teamRole(m).css">{{ teamRole(m).label }}</span></td>
+                                                        <td class="num-col">{{ m.commitCount || '—' }}</td>
+                                                        <td class="num-col">{{ m.reviewCount || '—' }}</td>
+                                                        <td class="holders-cell">{{ m.firstActivity ?? '—' }} → {{ m.lastActivity ?? '—' }}</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <!-- Knowledge Concentration -->
+        <mat-tab label="Knowledge Concentration">
+            <ng-template matTabContent>
+                <div class="tab-content">
+                    <ng-container [ngTemplateOutlet]="toolbar" [ngTemplateOutletContext]="{ s: deliveryRisk, i: 4 }"></ng-container>
+                    @if (deliveryRisk.loaded && highRiskCount > 0) {
+                        <div class="warn-banner">
+                            <mat-icon>warning</mat-icon>
+                            <strong>{{ highRiskCount }} {{ highRiskCount === 1 ? 'team is' : 'teams are' }} at high Knowledge Concentration</strong> ,  most of the work is concentrated in one person.
+                        </div>
+                    }
+                    <ng-container [ngTemplateOutlet]="status"  [ngTemplateOutletContext]="{ s: deliveryRisk }"></ng-container>
+                    @if (!deliveryRisk.loading && !deliveryRisk.error) {
+                        @if (deliveryRiskGroups.length === 0) {
+                            <p class="empty-state">No discipline-classified contributions yet, run the sync pipeline and apply the discipline teams.</p>
+                        } @else {
+                            <div class="client-cards">
+                                @for (g of deliveryRiskGroups; track g.orgUri) {
+                                    <div class="client-card">
+                                        <div class="client-card-head">
+                                            <span class="client-card-name">{{ g.clientName }}</span>
+                                        </div>
+                                        @for (d of g.disciplines; track d.discipline) {
+                                            <div class="disc-row">
+                                                <span class="disc-label">{{ d.discipline }}</span>
+                                                <div class="disc-body">
+                                                    <div class="conc-bar">
+                                                        <div class="conc-bar-fill" [ngClass]="'level-' + d.level" [style.width.%]="d.topShare * 100"></div>
+                                                    </div>
+                                                    <div class="conc-label">
+                                                        <mat-icon class="star-icon">star</mat-icon><strong>{{ d.topPersonUri | anon: d.topName }}</strong>
+                                                        — {{ topPct(d.topShare) }}% of commits ·
+                                                        {{ d.contributorCount }} {{ d.contributorCount === 1 ? 'person' : 'people' }}
+                                                    </div>
+                                                </div>
+                                                <span class="signal-badge" [ngClass]="riskBadge(d.level)">{{ riskLabel(d) }}</span>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="table-legend">
+                                <mat-icon style="font-size:14px;width:14px;height:14px">info</mat-icon>
+                                <span><mat-icon class="star-icon">star</mat-icon> = most valuable (top contributor) on that team ·
+                                      <em>Sole contributor</em> = one person did all the work ·
+                                      <em>High concentration</em> = one person wrote ≥80% ·
+                                      <em>Concentrated</em> = one person wrote 60–80% · <em>Distributed</em> = spread across the team. ·
+                                      Measured over each client's last 3 active years (not the last 3 calendar years), so dormant clients are scored on their own active period.</span>
+                            </div>
+                        }
+                    }
+                </div>
+            </ng-template>
+        </mat-tab>
+
+    </mat-tab-group>
+</div>
+
+<!-- shared toolbar: filter input + refresh -->
+<ng-template #toolbar let-s="s" let-i="i">
+    <div class="toolbar">
+        <mat-form-field appearance="outline" class="search-field">
+            <mat-label>{{ tabs[i].filterLabel }}</mat-label>
+            <input matInput [ngModel]="s.filter" (ngModelChange)="s.filter = $event; onFilter(i)" />
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button mat-stroked-button (click)="reload(i)"><mat-icon>refresh</mat-icon> Refresh</button>
+    </div>
+</ng-template>
+
+<!-- shared loading / error indicators -->
+<ng-template #status let-s="s">
+    @if (s.loading) {
+        <div class="loading-state"><mat-spinner diameter="40"></mat-spinner><span>Loading…</span></div>
+    } @else if (s.error) {
+        <div class="error-state"><mat-icon>error_outline</mat-icon> {{ s.error }}</div>
+    }
+</ng-template>

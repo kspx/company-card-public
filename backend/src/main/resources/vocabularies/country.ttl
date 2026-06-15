@@ -1,0 +1,51 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix country: <http://publications.europa.eu/resource/authority/country/> .
+
+ccv:Country a skos:ConceptScheme ;
+  skos:prefLabel "Country"@en ;
+  dcterms:description "Countries where organizations operate."@en ;
+  dcterms:created "2026-01-01"^^xsd:date .
+
+country:BEL a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Belgium"@en ; skos:notation "BE" .
+country:NLD a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Netherlands"@en ; skos:notation "NL" .
+country:LUX a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Luxembourg"@en ; skos:notation "LU" .
+country:DEU a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Germany"@en ; skos:notation "DE" .
+country:FRA a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "France"@en ; skos:notation "FR" .
+country:GBR a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "United Kingdom"@en ; skos:notation "GB" .
+country:USA a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "United States"@en ; skos:notation "US" .
+country:IRL a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Ireland"@en ; skos:notation "IE" .
+country:CHE a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Switzerland"@en ; skos:notation "CH" .
+country:AUT a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Austria"@en ; skos:notation "AT" .
+country:ESP a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Spain"@en ; skos:notation "ES" .
+country:ITA a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Italy"@en ; skos:notation "IT" .
+country:PRT a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Portugal"@en ; skos:notation "PT" .
+country:SWE a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Sweden"@en ; skos:notation "SE" .
+country:DNK a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Denmark"@en ; skos:notation "DK" .
+country:FIN a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Finland"@en ; skos:notation "FI" .
+country:NOR a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Norway"@en ; skos:notation "NO" .
+country:POL a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Poland"@en ; skos:notation "PL" .
+country:GRC a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Greece"@en ; skos:notation "GR" .
+country:CYP a skos:Concept ; skos:inScheme ccv:Country ; skos:topConceptOf ccv:Country ;
+  skos:prefLabel "Cyprus"@en ; skos:notation "CY" .

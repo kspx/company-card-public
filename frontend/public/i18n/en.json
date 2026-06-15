@@ -1,0 +1,12 @@
+{
+  "ui": {
+    "user-menu": {
+      "openUserMenu": "Open user menu",
+      "language": "Language",
+      "logout": "Logout",
+      "langs": {
+        "en": "English"
+      }
+    }
+  }
+}

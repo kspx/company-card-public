@@ -1,0 +1,90 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:ServiceType a skos:ConceptScheme ;
+  skos:prefLabel "Service Type"@en ;
+  dcterms:description "Types of services offered by a software consultancy."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  dcterms:modified "2026-02-08"^^xsd:date ;
+  skos:hasTopConcept ccv:SOFTWARE_DEV, ccv:IT_CONSULTING, ccv:SEMANTIC_WEB,
+                     ccv:DATA_ENGINEERING, ccv:CLOUD_SERVICES, ccv:AI_ML,
+                     ccv:UX_DESIGN, ccv:STAFF_AUGMENTATION,
+                     ccv:TRAINING, ccv:SUPPORT .
+
+ccv:SOFTWARE_DEV a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "Software Development"@en ;
+  skos:definition "Custom software development."@en ;
+  skos:notation "SOFTWARE_DEV" .
+
+ccv:IT_CONSULTING a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "IT Consulting"@en ;
+  skos:altLabel "Technical Advisory"@en ;
+  skos:definition "Technical advisory and architecture review."@en ;
+  skos:notation "IT_CONSULTING" .
+
+ccv:SEMANTIC_WEB a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "Semantic Web & Knowledge Graphs"@en ;
+  skos:altLabel "Linked Data"@en, "Knowledge Management"@en ;
+  skos:definition "Ontology and knowledge graph engineering."@en ;
+  skos:notation "SEMANTIC_WEB" .
+
+ccv:DATA_ENGINEERING a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "Data Engineering"@en ;
+  skos:altLabel "Data Management"@en ;
+  skos:definition "Data engineering and platform services."@en ;
+  skos:notation "DATA_ENGINEERING" .
+
+ccv:CLOUD_SERVICES a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "Cloud & Infrastructure"@en ;
+  skos:altLabel "Cloud Services"@en, "DevOps"@en ;
+  skos:definition "Cloud infrastructure and DevOps services."@en ;
+  skos:notation "CLOUD_SERVICES" .
+
+ccv:AI_ML a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "AI & Machine Learning"@en ;
+  skos:definition "AI and machine learning solutions."@en ;
+  skos:notation "AI_ML" .
+
+ccv:UX_DESIGN a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "UX/UI Design"@en ;
+  skos:altLabel "User Experience"@en ;
+  skos:definition "UX research and interface design."@en ;
+  skos:notation "UX_DESIGN" .
+
+ccv:STAFF_AUGMENTATION a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "Staff Augmentation"@en ;
+  skos:altLabel "Body Shopping"@en, "Team Extension"@en ;
+  skos:definition "Skilled consultants to reinforce a client's team."@en ;
+  skos:notation "STAFF_AUGMENTATION" .
+
+ccv:TRAINING a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "Training & Workshops"@en ;
+  skos:definition "Technical training and knowledge transfer."@en ;
+  skos:notation "TRAINING" .
+
+ccv:SUPPORT a skos:Concept ;
+  skos:inScheme ccv:ServiceType ;
+  skos:topConceptOf ccv:ServiceType ;
+  skos:prefLabel "Support & Maintenance"@en ;
+  skos:definition "Application support and maintenance."@en ;
+  skos:notation "SUPPORT" .

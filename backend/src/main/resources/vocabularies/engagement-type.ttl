@@ -1,0 +1,43 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:EngagementType a skos:ConceptScheme ;
+  skos:prefLabel "Engagement Type"@en ;
+  dcterms:description "Types of business relationships between software consultancies and other organizations."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  dcterms:modified "2026-02-08"^^xsd:date ;
+  skos:hasTopConcept ccv:CLIENT, ccv:ENGAGEMENT_PARTNERSHIP, ccv:VENDOR, ccv:SUBCONTRACTOR .
+
+ccv:CLIENT a skos:Concept ;
+  skos:inScheme ccv:EngagementType ;
+  skos:topConceptOf ccv:EngagementType ;
+  skos:prefLabel "Client"@en ;
+  skos:altLabel "Customer"@en ;
+  skos:definition "The organization receives software services or products from the consultancy."@en ;
+  skos:notation "CLIENT" .
+
+ccv:ENGAGEMENT_PARTNERSHIP a skos:Concept ;
+  skos:inScheme ccv:EngagementType ;
+  skos:topConceptOf ccv:EngagementType ;
+  skos:prefLabel "Partnership"@en ;
+  skos:altLabel "Strategic Partner"@en ;
+  skos:definition "A strategic or technology partnership with mutual collaboration."@en ;
+  skos:notation "ENGAGEMENT_PARTNERSHIP" .
+
+ccv:VENDOR a skos:Concept ;
+  skos:inScheme ccv:EngagementType ;
+  skos:topConceptOf ccv:EngagementType ;
+  skos:prefLabel "Vendor"@en ;
+  skos:altLabel "Supplier"@en ;
+  skos:definition "The organization supplies tools, licenses, or infrastructure to the consultancy."@en ;
+  skos:notation "VENDOR" .
+
+ccv:SUBCONTRACTOR a skos:Concept ;
+  skos:inScheme ccv:EngagementType ;
+  skos:topConceptOf ccv:EngagementType ;
+  skos:prefLabel "Subcontractor"@en ;
+  skos:altLabel "Sub"@en ;
+  skos:definition "The organization provides or receives subcontracted consultancy work."@en ;
+  skos:notation "SUBCONTRACTOR" .

@@ -1,0 +1,68 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:TeamType a skos:ConceptScheme ;
+  skos:prefLabel "Team Type"@en ;
+  dcterms:description "Functional categories of teams within a software consultancy."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:TEAM_DEVELOPMENT, ccv:TEAM_QA, ccv:TEAM_DEVOPS,
+                     ccv:TEAM_DESIGN, ccv:TEAM_DATA, ccv:TEAM_MANAGEMENT,
+                     ccv:TEAM_RESEARCH .
+
+ccv:TEAM_DEVELOPMENT a skos:Concept ;
+  skos:inScheme ccv:TeamType ;
+  skos:topConceptOf ccv:TeamType ;
+  skos:prefLabel "Development"@en ;
+  skos:altLabel "Engineering"@en, "Software Development"@en ;
+  skos:definition "A team primarily focused on software design and implementation."@en ;
+  skos:notation "TEAM_DEVELOPMENT" .
+
+ccv:TEAM_QA a skos:Concept ;
+  skos:inScheme ccv:TeamType ;
+  skos:topConceptOf ccv:TeamType ;
+  skos:prefLabel "QA & Testing"@en ;
+  skos:altLabel "Quality Assurance"@en, "Test"@en ;
+  skos:definition "A team focused on quality assurance, test planning, and automation."@en ;
+  skos:notation "TEAM_QA" .
+
+ccv:TEAM_DEVOPS a skos:Concept ;
+  skos:inScheme ccv:TeamType ;
+  skos:topConceptOf ccv:TeamType ;
+  skos:prefLabel "DevOps & Infrastructure"@en ;
+  skos:altLabel "DevOps"@en, "Platform"@en, "SRE"@en ;
+  skos:definition "A team managing CI/CD pipelines, cloud infrastructure, and deployments."@en ;
+  skos:notation "TEAM_DEVOPS" .
+
+ccv:TEAM_DESIGN a skos:Concept ;
+  skos:inScheme ccv:TeamType ;
+  skos:topConceptOf ccv:TeamType ;
+  skos:prefLabel "Design & UX"@en ;
+  skos:altLabel "UX"@en, "UI/UX"@en ;
+  skos:definition "A team focused on user experience research, interface design, and usability."@en ;
+  skos:notation "TEAM_DESIGN" .
+
+ccv:TEAM_DATA a skos:Concept ;
+  skos:inScheme ccv:TeamType ;
+  skos:topConceptOf ccv:TeamType ;
+  skos:prefLabel "Data & Analytics"@en ;
+  skos:altLabel "Data Engineering"@en, "BI"@en ;
+  skos:definition "A team focused on data engineering, analytics, and business intelligence."@en ;
+  skos:notation "TEAM_DATA" .
+
+ccv:TEAM_MANAGEMENT a skos:Concept ;
+  skos:inScheme ccv:TeamType ;
+  skos:topConceptOf ccv:TeamType ;
+  skos:prefLabel "Management"@en ;
+  skos:altLabel "Leadership"@en, "Executive"@en ;
+  skos:definition "A leadership or management team overseeing strategy, operations, or people."@en ;
+  skos:notation "TEAM_MANAGEMENT" .
+
+ccv:TEAM_RESEARCH a skos:Concept ;
+  skos:inScheme ccv:TeamType ;
+  skos:topConceptOf ccv:TeamType ;
+  skos:prefLabel "Research & Innovation"@en ;
+  skos:altLabel "R&D"@en ;
+  skos:definition "A team focused on applied research, innovation, and emerging technologies."@en ;
+  skos:notation "TEAM_RESEARCH" .

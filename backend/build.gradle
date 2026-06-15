@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    // Web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Database — H2 embedded SQL for user store, JPA for ORM
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2'
+
+    // RDF — Apache Jena (specific modules; avoids pulling in jena-fuseki-access
+    // which references a shaded Guava class removed in Jena 5.x)
+    implementation 'org.apache.jena:jena-arq:5.1.0'
+    implementation 'org.apache.jena:jena-tdb2:5.1.0'
+    implementation 'org.apache.jena:jena-shacl:5.1.0'
+
+    // JAXB API — required by Hibernate 6.5, excluded by Jena's transitive deps
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+
+    // JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.json:json:20240303'
+
+    // String similarity (Jaro-Winkler for identity resolution)
+    implementation 'org.apache.commons:commons-text:1.12.0'
+
+    // RML mapping engine for GitHub sync ETL
+    // Exclude Jena transitive deps: rmlmapper was built against Jena 4.x which
+    // registers subsystems (TDB1 InitTDB, Fuseki InitSecurity) that reference
+    // classes removed in Jena 5.x. Force rmlmapper to use our Jena 5.x instead.
+    implementation('be.ugent.rml:rmlmapper:6.3.0') {
+        exclude group: 'org.apache.jena'
+    }
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.withType(Test).configureEach { useJUnitPlatform() }
+bootJar { archiveFileName = 'backend.jar' }

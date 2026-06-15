@@ -1,0 +1,42 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:ProjectStatus a skos:ConceptScheme ;
+  skos:prefLabel "Project Status"@en ;
+  dcterms:description "Lifecycle statuses for projects."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:PROJECT_ONGOING, ccv:PROJECT_COMPLETED, ccv:PROJECT_PAUSED, ccv:PROJECT_CANCELLED .
+
+ccv:PROJECT_ONGOING a skos:Concept ;
+  skos:inScheme ccv:ProjectStatus ;
+  skos:topConceptOf ccv:ProjectStatus ;
+  skos:prefLabel "Ongoing"@en ;
+  skos:altLabel "In Progress"@en ;
+  skos:definition "A project currently in progress or development."@en ;
+  skos:notation "PROJECT_ONGOING" .
+
+ccv:PROJECT_COMPLETED a skos:Concept ;
+  skos:inScheme ccv:ProjectStatus ;
+  skos:topConceptOf ccv:ProjectStatus ;
+  skos:prefLabel "Completed"@en ;
+  skos:altLabel "Finished"@en, "Delivered"@en ;
+  skos:definition "A project that has been successfully completed and delivered."@en ;
+  skos:notation "PROJECT_COMPLETED" .
+
+ccv:PROJECT_PAUSED a skos:Concept ;
+  skos:inScheme ccv:ProjectStatus ;
+  skos:topConceptOf ccv:ProjectStatus ;
+  skos:prefLabel "Paused"@en ;
+  skos:altLabel "On Hold"@en ;
+  skos:definition "A project temporarily on hold or suspended."@en ;
+  skos:notation "PROJECT_PAUSED" .
+
+ccv:PROJECT_CANCELLED a skos:Concept ;
+  skos:inScheme ccv:ProjectStatus ;
+  skos:topConceptOf ccv:ProjectStatus ;
+  skos:prefLabel "Cancelled"@en ;
+  skos:altLabel "Terminated"@en ;
+  skos:definition "A project terminated before completion."@en ;
+  skos:notation "PROJECT_CANCELLED" .

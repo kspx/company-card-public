@@ -1,0 +1,33 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:OrganizationStatus a skos:ConceptScheme ;
+  skos:prefLabel "Organization Status"@en ;
+  dcterms:description "Operational status of an organisation from a business relationship perspective."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:ACTIVE, ccv:INACTIVE, ccv:DISSOLVED .
+
+ccv:ACTIVE a skos:Concept ;
+  skos:inScheme ccv:OrganizationStatus ;
+  skos:topConceptOf ccv:OrganizationStatus ;
+  skos:prefLabel "Active"@en ;
+  skos:definition "The organization is legally registered and currently operating."@en ;
+  skos:notation "ACTIVE" .
+
+ccv:INACTIVE a skos:Concept ;
+  skos:inScheme ccv:OrganizationStatus ;
+  skos:topConceptOf ccv:OrganizationStatus ;
+  skos:prefLabel "Inactive"@en ;
+  skos:altLabel "Dormant"@en ;
+  skos:definition "The organization exists legally but has ceased active operations."@en ;
+  skos:notation "INACTIVE" .
+
+ccv:DISSOLVED a skos:Concept ;
+  skos:inScheme ccv:OrganizationStatus ;
+  skos:topConceptOf ccv:OrganizationStatus ;
+  skos:prefLabel "Dissolved"@en ;
+  skos:altLabel "Closed"@en ;
+  skos:definition "The organization has been formally dissolved and no longer exists as a legal entity."@en ;
+  skos:notation "DISSOLVED" .

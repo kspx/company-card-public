@@ -1,0 +1,383 @@
+<div class="ccm">
+    <header class="ccm__header">
+        <button mat-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            Back
+        </button>
+        <app-public-nav />
+    </header>
+
+    @if (isLoading) {
+        <div class="ccm__loading">Loading...</div>
+    }
+
+    @if (selectedClass; as cls) {
+        @if (schemas[cls.uri]; as schemaState) {
+
+            @if (schemaState.loading && (selectedInstance || isCreatingNew)) {
+                <div class="ccm__loading">Loading schema…</div>
+            }
+
+            @if (!schemaState.loading && !schemaState.error && selectedInstance && !isCreatingNew && mode === 'view') {
+                <!-- ── Read-only profile view ── -->
+                <div class="ccm__profile">
+                    <div class="ccm__profile-header">
+                        <span class="ccm__profile-type">{{ fu.getLocalName(cls.uri) }}</span>
+                        @if (canEdit()) {
+                            <button mat-flat-button color="primary" type="button" (click)="toggleMode()">
+                                Edit <mat-icon>edit</mat-icon>
+                            </button>
+                        }
+                    </div>
+
+                    @if (auth.isAuthenticated && !pseudo.enabled) {
+                        <div class="ccm__instance-info">
+                            <small><strong>URI:</strong> {{ selectedInstance.uri }}</small>
+                        </div>
+                    }
+
+                    <dl class="ccm__profile-list">
+                        @for (f of schemaState.fields; track f.property) {
+                            @if (hasValue(f)) {
+                                <div class="ccm__profile-row">
+                                    <dt>{{ f.label || fu.getLocalName(f.property) }}</dt>
+                                    <dd>
+                                        @if (fu.isObjectProperty(f)) {
+                                            @for (uri of getMultiValue(f); track uri) {
+                                                <a class="ccm__profile-chip ccm__profile-chip--link"
+                                                   (click)="navigateToInstance(f.range, uri)">
+                                                    {{ getInstanceLabel(uri) }}
+                                                </a>
+                                            }
+                                        } @else if (fu.isEsco(f)) {
+                                            @for (uri of getMultiValue(f); track uri) {
+                                                <span class="ccm__profile-chip">{{ getEscoSkillLabel(uri) }}</span>
+                                            }
+                                        } @else if (fu.isSKOS(f)) {
+                                            @if (f.maxCount !== 1) {
+                                                @for (uri of getMultiValue(f); track uri) {
+                                                    <span class="ccm__profile-chip">{{ getConceptLabel(uri, f.property) }}</span>
+                                                }
+                                            } @else {
+                                                <span class="ccm__profile-chip">{{ getConceptLabel(formData[fu.getPropName(f.property)], f.property) }}</span>
+                                            }
+                                        } @else if (f.maxCount !== 1) {
+                                            @for (val of getMultiValue(f); track val) {
+                                                <span class="ccm__profile-chip">{{ val }}</span>
+                                            }
+                                        } @else {
+                                            <span>{{ viewLiteral(f) }}</span>
+                                        }
+                                    </dd>
+                                </div>
+                            }
+                        }
+                    </dl>
+                </div>
+            }
+
+            @if (!schemaState.loading && !schemaState.error && (isCreatingNew || (selectedInstance && mode === 'edit'))) {
+                <form (ngSubmit)="submit()" class="ccm__form">
+
+                    <h3>
+                        @if (isCreatingNew) { Create New {{ cls.label }}
+                        } @else if (auth.role === 'ADMIN') { {{ mode === 'edit' ? 'Edit ' : '' }}{{ cls.label }}
+                        } @else { {{ mode === 'edit' ? 'Edit Your Profile' : 'Your Profile' }}
+                        }
+                    </h3>
+
+                    @if (auth.isAuthenticated) {
+                        <div class="ccm__instance-info">
+                            <small>
+                                <strong>URI:</strong>
+                                {{ isCreatingNew ? '(Will be assigned automatically)' : selectedInstance.uri }}
+                            </small>
+                        </div>
+                    }
+
+                    @if (isOrganizationCreate) {
+                        <div class="wikidata-panel">
+                            <label for="wikidata-search">Pre-fill from Wikidata</label>
+                            <small class="field-comment">Search the organization on Wikidata to auto-fill fields. You can still edit anything afterwards.</small>
+                            @if (wikidataPicked) {
+                                <div class="wikidata-picked">
+                                    <span class="wikidata-picked-label">
+                                        <strong>{{ wikidataPicked.label }}</strong>
+                                        <small>{{ wikidataPicked.description }}</small>
+                                        <a [href]="wikidataPicked.uri" target="_blank" rel="noopener">{{ wikidataPicked.qid }}</a>
+                                    </span>
+                                    <button type="button" class="wikidata-clear" (click)="clearWikidataPick()">×</button>
+                                </div>
+                                @if (wikidataEnriching) {
+                                    <small>Fetching details from Wikidata…</small>
+                                }
+                            } @else {
+                                <input id="wikidata-search" type="text"
+                                       placeholder="Type organization name (min 2 chars)…"
+                                       [ngModel]="wikidataQuery"
+                                       (ngModelChange)="onWikidataSearchChange($event)"
+                                       [ngModelOptions]="{standalone: true}"
+                                       autocomplete="off"/>
+                                @if (wikidataSearching) {
+                                    <small>Searching Wikidata…</small>
+                                }
+                                @if (wikidataResults.length > 0) {
+                                    <div class="wikidata-results">
+                                        @for (c of wikidataResults; track c.qid) {
+                                            <button type="button" class="wikidata-result-item" (click)="selectWikidata(c)">
+                                                <strong>{{ c.label }}</strong>
+                                                @if (c.description) {
+                                                    <small> — {{ c.description }}</small>
+                                                }
+                                                <small class="wikidata-qid"> ({{ c.qid }})</small>
+                                            </button>
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+
+                    <div class="ccm__fields">
+                        @for (f of schemaState.fields; track f.property) {
+                            @if ((!isCreatingNew || !f.createOnly) && (mode !== 'view' || hasValue(f))) {
+                            <div class="ccm__field" [class.ccm__field--required]="f.required && mode !== 'view'">
+
+                                <div class="ccm__label-wrapper">
+                                    <label [attr.for]="cls.uri + '_' + f.property">
+                                        {{ f.label || f.property }}
+                                    </label>
+                                    @if (f.required && mode !== 'view') {
+                                        <span class="ccm__required-badge">Required</span>
+                                    }
+                                </div>
+
+                                <!-- Datatype input (single value) -->
+                                @if (f.isDatatypeProperty && !fu.isSKOS(f) && f.maxCount === 1) {
+                                    <input
+                                            [id]="cls.uri + '_' + f.property"
+                                            [type]="fu.inputType(f)"
+                                            [(ngModel)]="formData[fu.getPropName(f.property)]"
+                                            [name]="fu.getPropName(f.property)"
+                                            [required]="f.required"
+                                            [disabled]="f.computed"/>
+                                }
+
+                                <!-- Datatype input (multi-value) -->
+                                @if (f.isDatatypeProperty && !fu.isSKOS(f) && f.maxCount !== 1) {
+                                    <div class="ccm__object-ref">
+                                        @if (getMultiValue(f).length > 0) {
+                                            <div class="ccm__chips">
+                                                @for (val of getMultiValue(f); track val) {
+                                                    <span class="ccm__profile-chip">
+                                                        {{ val }}
+                                                        <button type="button" class="ccm__chip-remove"
+                                                                (click)="removeFromMultiValue(f, val)">×</button>
+                                                    </span>
+                                                }
+                                            </div>
+                                        }
+                                        <div class="ccm__multi-add">
+                                            <input [type]="fu.inputType(f)"
+                                                   [placeholder]="'Add ' + f.label + '...'"
+                                                   [ngModel]="multiValueInput[fu.getPropName(f.property)] || ''"
+                                                   (ngModelChange)="multiValueInput[fu.getPropName(f.property)] = $event"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   (keydown.enter)="addMultiValue(f, $event)"/>
+                                            <button mat-stroked-button type="button"
+                                                    (click)="addMultiValue(f)">Add</button>
+                                        </div>
+                                    </div>
+                                }
+
+                                <!-- SKOS concepts -->
+                                @if (fu.isSKOS(f)) {
+                                    <div class="ccm__object-ref">
+                                        @if (skosConceptsLoading[f.property]) {
+                                            <small>Loading concepts...</small>
+                                        }
+
+                                        @if (f.maxCount !== 1) {
+                                            @if (getMultiValue(f).length > 0) {
+                                                <div class="ccm__chips">
+                                                    @for (uri of getMultiValue(f); track uri) {
+                                                        <span class="ccm__profile-chip">
+                                                            {{ getConceptLabel(uri, f.property) }}
+                                                            <button type="button" class="ccm__chip-remove"
+                                                                    (click)="removeFromMultiValue(f, uri)">×</button>
+                                                        </span>
+                                                    }
+                                                </div>
+                                            }
+
+                                            @if (mode !== 'view' && !skosConceptsLoading[f.property]) {
+                                                <div class="ccm__skos-search">
+                                                    <input type="text"
+                                                           [placeholder]="'Search ' + f.label + '...'"
+                                                           [ngModel]="skosSearchText[f.property] || ''"
+                                                           (ngModelChange)="onSkosSearch(f, $event)"
+                                                           [ngModelOptions]="{standalone: true}"
+                                                           autocomplete="off"/>
+                                                    @if ((getFilteredConcepts(f) || []).length > 0) {
+                                                        <div class="ccm__skos-results">
+                                                            @for (concept of getFilteredConcepts(f); track concept.uri) {
+                                                                <button type="button" class="ccm__result-item"
+                                                                        (click)="selectSkosConcept(f, concept)">
+                                                                    {{ concept.label }}
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        } @else {
+                                            @if (!skosConceptsLoading[f.property] && (skosConcepts[f.property] || []).length === 0) {
+                                                <small class="ccm__no-options">No options available</small>
+                                            }
+                                            @if ((skosConcepts[f.property] || []).length > 0) {
+                                                <select
+                                                        [id]="cls.uri + '_' + f.property"
+                                                        [(ngModel)]="formData[fu.getPropName(f.property)]"
+                                                        [name]="fu.getPropName(f.property)"
+                                                        [disabled]="skosConceptsLoading[f.property]">
+                                                    <option [ngValue]="null">-- Select {{ f.label }} --</option>
+                                                    @if (formData[fu.getPropName(f.property)] && !isValueInLoadedConcepts(formData[fu.getPropName(f.property)], f.property)) {
+                                                        <option [ngValue]="formData[fu.getPropName(f.property)]">
+                                                            {{ getConceptLabel(formData[fu.getPropName(f.property)], f.property) }}
+                                                            (current)
+                                                        </option>
+                                                    }
+                                                    @for (concept of skosConcepts[f.property] || []; track concept.uri) {
+                                                        <option [ngValue]="concept.uri">{{ concept.label }}</option>
+                                                    }
+                                                </select>
+                                            }
+                                        }
+                                    </div>
+                                }
+
+                                <!-- ESCO skills/occupations -->
+                                @if (fu.isEsco(f)) {
+                                    <div class="ccm__object-ref">
+                                        @if (getMultiValue(f).length > 0) {
+                                            <div class="ccm__chips">
+                                                @for (uri of getMultiValue(f); track uri) {
+                                                    <span class="ccm__profile-chip">
+                                                        {{ getEscoSkillLabel(uri) }}
+                                                        @if (!f.noCreate) {
+                                                            <button type="button" class="ccm__chip-remove"
+                                                                    (click)="removeFromMultiValue(f, uri)">×</button>
+                                                        }
+                                                    </span>
+                                                }
+                                            </div>
+                                        }
+
+                                        @if (f.maxCount !== 1 || getMultiValue(f).length === 0) {
+                                        <div class="ccm__esco-search">
+                                            <input type="text"
+                                                   [placeholder]="'Type to search ' + f.label + '...'"
+                                                   [ngModel]="search.escoSearchText[fu.getPropName(f.property)] || ''"
+                                                   (ngModelChange)="onEscoSearch(f, $event)"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   autocomplete="off"/>
+                                            @if (search.escoSearchLoading[fu.getPropName(f.property)]) {
+                                                <small class="ccm__esco-loading">Searching...</small>
+                                            }
+                                            @if ((search.escoSearchResults[fu.getPropName(f.property)] || []).length > 0) {
+                                                <div class="ccm__esco-results">
+                                                    @for (item of search.escoSearchResults[fu.getPropName(f.property)]; track item.uri) {
+                                                        <button type="button" class="ccm__result-item"
+                                                                (click)="selectEscoSkill(f, item)">
+                                                            {{ item.label }}
+                                                        </button>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        } <!-- end @if maxCount !== 1 || empty -->
+                                    </div>
+                                }
+
+                                <!-- Object property references -->
+                                @if (fu.isObjectProperty(f)) {
+                                    <div class="ccm__object-ref">
+                                        @if (getMultiValue(f).length > 0) {
+                                            <div class="ccm__chips">
+                                                @for (uri of getMultiValue(f); track uri) {
+                                                    <span class="ccm__profile-chip ccm__profile-chip--link">
+                                                        <a (click)="navigateToInstance(f.range, uri)">
+                                                            {{ getInstanceLabel(uri) }}
+                                                        </a>
+                                                        @if (!f.noCreate) {
+                                                            <button type="button" class="ccm__chip-remove"
+                                                                    (click)="removeFromMultiValue(f, uri)">×</button>
+                                                        }
+                                                    </span>
+                                                }
+                                            </div>
+                                        }
+
+                                        @if (f.maxCount !== 1 || getMultiValue(f).length === 0) {
+                                            @if (!f.createOnly) {
+                                                <div class="ccm__esco-search">
+                                                    <input type="text"
+                                                           [placeholder]="'Search ' + f.label + '...'"
+                                                           [ngModel]="search.objSearchText[fu.getPropName(f.property)] || ''"
+                                                           (ngModelChange)="onObjSearch(f, $event)"
+                                                           [ngModelOptions]="{standalone: true}"
+                                                           autocomplete="off"/>
+                                                    @if ((search.objSearchText[fu.getPropName(f.property)] || '').length > 0) {
+                                                        <div class="ccm__esco-results">
+                                                            @for (inst of getFilteredObjInstances(f); track inst.uri) {
+                                                                <button type="button" class="ccm__result-item"
+                                                                        (click)="selectObjInstance(f, inst)">
+                                                                    {{ inst.label || getInstanceLabel(inst.uri) }}
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+
+                                            @if (!f.noCreate) {
+                                                <button mat-stroked-button type="button"
+                                                        (click)="openCreateDialog(f)">
+                                                    + Create new {{ f.label }}
+                                                </button>
+                                            }
+                                        }
+                                    </div>
+                                }
+
+                                @if (f.comment && mode !== 'view') {
+                                    <small>{{ f.comment }}</small>
+                                }
+                            </div>
+                            } <!-- end @if (!isCreatingNew || !f.createOnly) -->
+                        }
+                    </div>
+
+                    <div class="ccm__actions">
+                        <button mat-flat-button color="primary" type="submit">
+                            {{ isCreatingNew ? 'Create Instance' : 'Save' }}
+                        </button>
+                        <button mat-stroked-button type="button" (click)="cancel()">Cancel</button>
+                        @if (!isCreatingNew && selectedInstance && auth.role === 'ADMIN') {
+                            <button mat-flat-button color="warn" type="button" (click)="deleteInstance()">
+                                Delete
+                            </button>
+                        }
+                    </div>
+                </form>
+            }
+        }
+    }
+
+    @if (rdfResult) {
+        <div class="ccm__rdf-section">
+            <h3>Status</h3>
+            <pre class="ccm__rdf">{{ rdfResult }}</pre>
+        </div>
+    }
+</div>

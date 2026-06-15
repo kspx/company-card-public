@@ -1,0 +1,34 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:MembershipRole a skos:ConceptScheme ;
+  skos:prefLabel "Team Membership Role"@en ;
+  dcterms:description "Role a person plays within a team: leader, manager, or regular member."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:MEMBERSHIP_LEADER, ccv:MEMBERSHIP_MANAGER, ccv:MEMBERSHIP_MEMBER .
+
+ccv:MEMBERSHIP_LEADER a skos:Concept ;
+  skos:inScheme ccv:MembershipRole ;
+  skos:topConceptOf ccv:MembershipRole ;
+  skos:prefLabel "Leader"@en ;
+  skos:altLabel "Team Lead"@en, "Tech Lead"@en ;
+  skos:definition "The technical or functional leader of the team."@en ;
+  skos:notation "MEMBERSHIP_LEADER" .
+
+ccv:MEMBERSHIP_MANAGER a skos:Concept ;
+  skos:inScheme ccv:MembershipRole ;
+  skos:topConceptOf ccv:MembershipRole ;
+  skos:prefLabel "Manager"@en ;
+  skos:altLabel "People Manager"@en ;
+  skos:definition "The administrative or people manager of the team."@en ;
+  skos:notation "MEMBERSHIP_MANAGER" .
+
+ccv:MEMBERSHIP_MEMBER a skos:Concept ;
+  skos:inScheme ccv:MembershipRole ;
+  skos:topConceptOf ccv:MembershipRole ;
+  skos:prefLabel "Member"@en ;
+  skos:altLabel "Contributor"@en ;
+  skos:definition "A regular member of the team, contributing to its projects without a leadership or management role."@en ;
+  skos:notation "MEMBERSHIP_MEMBER" .

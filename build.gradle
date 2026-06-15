@@ -1,0 +1,6 @@
+plugins { id 'base' }
+allprojects {
+  group = 'zone.cogni.companycard'
+  version = '0.1.0'
+}
+subprojects { repositories { mavenCentral() } }

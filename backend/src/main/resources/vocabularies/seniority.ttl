@@ -1,0 +1,48 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:Seniority a skos:ConceptScheme ;
+  skos:prefLabel "Seniority Level"@en ;
+  dcterms:description "Career seniority levels for technical professionals."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:JUNIOR, ccv:MID_LEVEL, ccv:SENIOR, ccv:LEAD, ccv:PRINCIPAL .
+
+ccv:JUNIOR a skos:Concept ;
+  skos:inScheme ccv:Seniority ;
+  skos:topConceptOf ccv:Seniority ;
+  skos:prefLabel "Junior"@en ;
+  skos:definition "Entry-level professional with 0-2 years of experience."@en ;
+  skos:notation "JUNIOR" .
+
+ccv:MID_LEVEL a skos:Concept ;
+  skos:inScheme ccv:Seniority ;
+  skos:topConceptOf ccv:Seniority ;
+  skos:prefLabel "Mid-level"@en ;
+  skos:altLabel "Mid"@en ;
+  skos:definition "Professional with 3-5 years of experience."@en ;
+  skos:notation "MID_LEVEL" .
+
+ccv:SENIOR a skos:Concept ;
+  skos:inScheme ccv:Seniority ;
+  skos:topConceptOf ccv:Seniority ;
+  skos:prefLabel "Senior"@en ;
+  skos:definition "Experienced professional with 5-10 years of experience."@en ;
+  skos:notation "SENIOR" .
+
+ccv:LEAD a skos:Concept ;
+  skos:inScheme ccv:Seniority ;
+  skos:topConceptOf ccv:Seniority ;
+  skos:prefLabel "Lead"@en ;
+  skos:altLabel "Tech Lead"@en ;
+  skos:definition "Technical leader with 8-12 years of experience."@en ;
+  skos:notation "LEAD" .
+
+ccv:PRINCIPAL a skos:Concept ;
+  skos:inScheme ccv:Seniority ;
+  skos:topConceptOf ccv:Seniority ;
+  skos:prefLabel "Principal"@en ;
+  skos:altLabel "Principal Engineer"@en ;
+  skos:definition "Expert-level technical leader with 10+ years of experience."@en ;
+  skos:notation "PRINCIPAL" .

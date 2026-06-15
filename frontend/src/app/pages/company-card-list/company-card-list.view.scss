@@ -1,0 +1,180 @@
+.ccl {
+  --primary: #004aad;
+  --border:  #e2e8f0;
+  --text:    #1a202c;
+  --muted:   #64748b;
+  --radius:  8px;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  background: #f8fafc;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    h2 { margin: 0; font-size: 1.7rem; font-weight: 700; color: var(--text); }
+  }
+
+  &__subtitle { margin: 4px 0 0; color: var(--muted); font-size: 0.95rem; }
+
+  &__header-actions { display: flex; gap: 8px; align-items: center; }
+
+  &__loading { padding: 3rem; text-align: center; color: var(--muted); }
+
+  &__profile-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: var(--radius);
+    padding: 0.9rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: #5d4037;
+  }
+
+  // ── Type cards ──────────────────────────────────────
+
+  &__type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  &__type-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 1.1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,.07);
+    cursor: pointer;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: border-color .15s, box-shadow .15s;
+
+    &:hover { border-color: #bae6fd; box-shadow: 0 2px 8px rgba(0,74,173,.1); }
+    &--active { border-color: var(--primary); }
+  }
+
+  &__type-card-header { display: flex; justify-content: space-between; align-items: center; }
+
+  &__type-card-name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+
+  &__type-card-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 7px;
+    border-radius: 13px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  // ── Instance sections ────────────────────────────────
+
+  &__instance-section {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,.07);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+
+  &__instance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+
+    h3 { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--text); }
+  }
+
+  &__section-count { font-size: 0.85rem; color: var(--muted); }
+
+  // ── Filters (search + status chips) ──────────────────
+
+  &__filters {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__search {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color .15s;
+    &:focus { border-color: var(--primary); }
+  }
+
+  &__chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  &__chip {
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .12s, border-color .12s, color .12s;
+    &:hover { border-color: #bae6fd; }
+    &--active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  }
+
+  &__instance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1.25rem;
+    cursor: pointer;
+    transition: background .1s;
+    & + & { border-top: 1px solid #f4f4f4; }
+    &:hover { background: #f5f9ff; }
+  }
+
+  &__instance-name { font-size: 0.95rem; color: #2c3e50; font-weight: 500; }
+
+  &__instance-arrow { color: #a0aec0; font-size: 20px; width: 20px; height: 20px; }
+
+  &__empty {
+    padding: 2.5rem;
+    text-align: center;
+    p { color: var(--muted); margin: 0 0 1.25rem; }
+  }
+
+  // ── Pagination ───────────────────────────────────────
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  &__page-info { font-size: 0.85rem; color: var(--muted); }
+}

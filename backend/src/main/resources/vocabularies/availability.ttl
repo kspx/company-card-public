@@ -1,0 +1,49 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:Availability a skos:ConceptScheme ;
+  skos:prefLabel "Availability Status"@en ;
+  dcterms:description "Current work availability statuses for personnel."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:AVAILABLE, ccv:ON_PROJECT, ccv:PARTIALLY_AVAILABLE, ccv:ON_LEAVE, ccv:NOT_AVAILABLE .
+
+ccv:AVAILABLE a skos:Concept ;
+  skos:inScheme ccv:Availability ;
+  skos:topConceptOf ccv:Availability ;
+  skos:prefLabel "Available"@en ;
+  skos:altLabel "Free"@en, "Unassigned"@en ;
+  skos:definition "Available for new assignments or project work."@en ;
+  skos:notation "AVAILABLE" .
+
+ccv:ON_PROJECT a skos:Concept ;
+  skos:inScheme ccv:Availability ;
+  skos:topConceptOf ccv:Availability ;
+  skos:prefLabel "On Project"@en ;
+  skos:altLabel "Assigned"@en ;
+  skos:definition "Currently assigned to and actively working on a project."@en ;
+  skos:notation "ON_PROJECT" .
+
+ccv:PARTIALLY_AVAILABLE a skos:Concept ;
+  skos:inScheme ccv:Availability ;
+  skos:topConceptOf ccv:Availability ;
+  skos:prefLabel "Partially Available"@en ;
+  skos:altLabel "Semi-available"@en ;
+  skos:definition "Available for limited or part-time work; already committed to other projects."@en ;
+  skos:notation "PARTIALLY_AVAILABLE" .
+
+ccv:ON_LEAVE a skos:Concept ;
+  skos:inScheme ccv:Availability ;
+  skos:topConceptOf ccv:Availability ;
+  skos:prefLabel "On Leave"@en ;
+  skos:altLabel "Unavailable"@en ;
+  skos:definition "Currently on leave (vacation, medical, or parental)."@en ;
+  skos:notation "ON_LEAVE" .
+
+ccv:NOT_AVAILABLE a skos:Concept ;
+  skos:inScheme ccv:Availability ;
+  skos:topConceptOf ccv:Availability ;
+  skos:prefLabel "Not Available"@en ;
+  skos:definition "Not available for assignments or project work."@en ;
+  skos:notation "NOT_AVAILABLE" .

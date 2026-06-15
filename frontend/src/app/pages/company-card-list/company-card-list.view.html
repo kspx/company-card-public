@@ -1,0 +1,126 @@
+<div class="ccl">
+    <header class="ccl__header">
+        <div>
+            <h2>Company Card Manager</h2>
+            <p class="ccl__subtitle">Manage your organization's knowledge graph</p>
+        </div>
+        <div class="ccl__header-actions">
+            <button mat-stroked-button (click)="router.navigate(['/stories'])">◎ Data Stories</button>
+<!--
+            <button mat-stroked-button (click)="router.navigate(['/graph'])">⬡ Knowledge Graph</button>
+-->
+            <app-public-nav />
+        </div>
+    </header>
+
+    @if (needsProfile) {
+        <div class="ccl__profile-banner">
+            <span>You don't have a profile yet.</span>
+            <button mat-flat-button color="primary" (click)="createNew(personClassUri)">Create your Person card</button>
+        </div>
+    }
+
+    @if (isLoading) {
+        <div class="ccl__loading">Loading...</div>
+    } @else {
+        <div class="ccl__type-grid">
+            @for (cls of classes; track cls.uri) {
+                <div class="ccl__type-card"
+                     [class.ccl__type-card--active]="selectedType === cls.uri"
+                     (click)="selectType(cls.uri)">
+                    <div class="ccl__type-card-header">
+                        <span class="ccl__type-card-name">{{ cls.label }}</span>
+                        <span class="ccl__type-card-count">{{ getCountForClass(cls.uri) }}</span>
+                    </div>
+                    @if (auth.role === 'ADMIN') {
+                        <button mat-stroked-button (click)="createNew(cls.uri); $event.stopPropagation()">
+                            + Create
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (selectedType) {
+            <div class="ccl__instance-section">
+                <div class="ccl__instance-header">
+                    <h3>{{ getSelectedClassLabel() }}</h3>
+                    <button mat-button (click)="selectType('')">← All types</button>
+                </div>
+                <div class="ccl__filters">
+                    <input class="ccl__search" type="text" [value]="searchText"
+                           (input)="onSearch($any($event.target).value)" placeholder="Search by name…" />
+                    @if (statusOptions.length > 0) {
+                        <div class="ccl__chips">
+                            @for (s of statusOptions; track s) {
+                                <button class="ccl__chip" [class.ccl__chip--active]="selectedStatus === s"
+                                        (click)="selectStatus(s)">{{ s }}</button>
+                            }
+                        </div>
+                    }
+                </div>
+                @if (filteredInstances.length === 0) {
+                    <div class="ccl__empty">
+                        @if (hasActiveFilter) {
+                            <p>No matches for the current filter.</p>
+                        } @else {
+                            <p>No instances yet.</p>
+                            @if (auth.role === 'ADMIN') {
+                                <button mat-flat-button color="primary" (click)="createNew(selectedType)">
+                                    Create the first {{ getSelectedClassLabel() }}
+                                </button>
+                            }
+                        }
+                    </div>
+                } @else {
+                    <div class="ccl__instance-list">
+                        @for (inst of getPagedItems(filteredInstances, '_filtered'); track inst.uri) {
+                            <div class="ccl__instance-row" (click)="openInstance(inst)">
+                                <span class="ccl__instance-name">{{ (inst.uri | anon: inst.label) || '(No label)' }}</span>
+                                <mat-icon class="ccl__instance-arrow">chevron_right</mat-icon>
+                            </div>
+                        }
+                    </div>
+                    <ng-container [ngTemplateOutlet]="pagination"
+                                  [ngTemplateOutletContext]="{ items: filteredInstances, key: '_filtered' }">
+                    </ng-container>
+                }
+            </div>
+        } @else {
+            @for (cls of classes; track cls.uri) {
+                @if (getInstancesForClass(cls.uri).length > 0) {
+                    <div class="ccl__instance-section">
+                        <div class="ccl__instance-header">
+                            <h3>{{ cls.label }}</h3>
+                            <span class="ccl__section-count">{{ getInstancesForClass(cls.uri).length }} items</span>
+                        </div>
+                        <div class="ccl__instance-list">
+                            @for (inst of getPagedItems(getInstancesForClass(cls.uri), cls.uri); track inst.uri) {
+                                <div class="ccl__instance-row" (click)="openInstance(inst)">
+                                    <span class="ccl__instance-name">{{ (inst.uri | anon: inst.label) || '(No label)' }}</span>
+                                    <mat-icon class="ccl__instance-arrow">chevron_right</mat-icon>
+                                </div>
+                            }
+                        </div>
+                        <ng-container [ngTemplateOutlet]="pagination"
+                                      [ngTemplateOutletContext]="{ items: getInstancesForClass(cls.uri), key: cls.uri }">
+                        </ng-container>
+                    </div>
+                }
+            }
+            @if (allInstances.length === 0) {
+                <div class="ccl__empty"><p>No data yet. Start by creating an Organization.</p></div>
+            }
+        }
+    }
+</div>
+
+<ng-template #pagination let-items="items" let-key="key">
+    @if (items.length > pageSize) {
+        <div class="ccl__pagination">
+            <button mat-stroked-button [disabled]="getPage(key) === 0" (click)="prevPage(key)">Previous</button>
+            <span class="ccl__page-info">{{ getPage(key) + 1 }} / {{ getTotalPages(items) }}</span>
+            <button mat-stroked-button [disabled]="getPage(key) + 1 >= getTotalPages(items)" (click)="nextPage(key, items)">Next</button>
+        </div>
+    }
+</ng-template>

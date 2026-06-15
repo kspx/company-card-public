@@ -1,0 +1,66 @@
+<div class="graph-page">
+    <header class="graph-header">
+        <button class="graph-btn" (click)="goBack()">← Back</button>
+
+        <div class="graph-title">
+            <h2>Knowledge Graph</h2>
+            <span class="graph-stats" *ngIf="!isLoading && !error">
+                {{ nodeCount }} entities · {{ edgeCount }} relationships
+            </span>
+        </div>
+
+        <input
+            class="graph-search"
+            type="text"
+            placeholder="Search entities…"
+            [(ngModel)]="searchText"
+            (ngModelChange)="onSearch($event)"
+            *ngIf="!isLoading && !error && nodeCount > 0"
+        />
+
+        <div class="graph-zoom-btns" *ngIf="!isLoading && !error && nodeCount > 0">
+            <button class="graph-btn" (click)="zoomIn()" title="Zoom in">+</button>
+            <button class="graph-btn" (click)="zoomOut()" title="Zoom out">−</button>
+            <button class="graph-btn" (click)="resetView()" title="Fit all">⊡</button>
+        </div>
+
+        <app-public-nav />
+    </header>
+
+    <div class="graph-body">
+        <div *ngIf="isLoading" class="graph-state">
+            <div class="spinner"></div>
+            <p>Loading graph…</p>
+        </div>
+
+        <div *ngIf="error" class="graph-state graph-state--error">
+            <p>{{ error }}</p>
+        </div>
+
+        <div *ngIf="!isLoading && !error && nodeCount === 0" class="graph-state">
+            <p>No data yet. Create some entities first.</p>
+        </div>
+
+        <!-- Cytoscape canvas -->
+        <div #cy class="cy-canvas" [class.cy-canvas--hidden]="isLoading || !!error || nodeCount === 0"></div>
+
+        <!-- Hover tooltip -->
+        <div class="node-tooltip"
+             *ngIf="tooltip.visible"
+             [style.left.px]="tooltip.x"
+             [style.top.px]="tooltip.y">
+            <span class="node-tooltip__type">{{ tooltip.typeLabel }}</span>
+            <strong class="node-tooltip__label">{{ tooltip.label }}</strong>
+        </div>
+
+        <!-- Legend -->
+        <aside class="graph-legend" *ngIf="!isLoading && !error && nodeCount > 0">
+            <p class="graph-legend__title">Entity types</p>
+            <div class="graph-legend__item" *ngFor="let item of legend">
+                <span class="graph-legend__dot" [style.background]="item.color"></span>
+                {{ item.label }}
+            </div>
+            <p class="graph-legend__hint">Click a node to open its card</p>
+        </aside>
+    </div>
+</div>

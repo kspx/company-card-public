@@ -1,0 +1,83 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix language: <http://publications.europa.eu/resource/authority/language/> .
+
+ccv:Language a skos:ConceptScheme ;
+  skos:prefLabel "Language"@en ;
+  dcterms:description "Languages spoken by personnel, curated for European IT consultancy context. Codes follow ISO 639-1."@en ;
+  dcterms:source <http://publications.europa.eu/resource/authority/language> ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept language:ENG, language:FRA, language:NLD, language:DEU, language:SPA,
+                     language:ITA, language:POR, language:ELL, language:POL, language:RON,
+                     language:CES, language:HUN, language:BUL, language:HRV, language:SLK,
+                     language:SLV, language:DAN, language:FIN, language:SWE, language:EST,
+                     language:LAV, language:LIT, language:GLE, language:MLT,
+                     language:RUS, language:UKR, language:TUR, language:ARA,
+                     language:ZHO, language:JPN, language:KOR, language:HIN .
+
+language:ENG a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "English"@en ; skos:notation "en" .
+language:FRA a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "French"@en ; skos:notation "fr" .
+language:NLD a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Dutch"@en ; skos:notation "nl" .
+language:DEU a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "German"@en ; skos:notation "de" .
+language:SPA a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Spanish"@en ; skos:notation "es" .
+language:ITA a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Italian"@en ; skos:notation "it" .
+language:POR a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Portuguese"@en ; skos:notation "pt" .
+language:ELL a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Greek"@en ; skos:notation "el" .
+language:POL a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Polish"@en ; skos:notation "pl" .
+language:RON a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Romanian"@en ; skos:notation "ro" .
+language:CES a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Czech"@en ; skos:notation "cs" .
+language:HUN a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Hungarian"@en ; skos:notation "hu" .
+language:BUL a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Bulgarian"@en ; skos:notation "bg" .
+language:HRV a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Croatian"@en ; skos:notation "hr" .
+language:SLK a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Slovak"@en ; skos:notation "sk" .
+language:SLV a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Slovenian"@en ; skos:notation "sl" .
+language:DAN a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Danish"@en ; skos:notation "da" .
+language:FIN a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Finnish"@en ; skos:notation "fi" .
+language:SWE a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Swedish"@en ; skos:notation "sv" .
+language:EST a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Estonian"@en ; skos:notation "et" .
+language:LAV a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Latvian"@en ; skos:notation "lv" .
+language:LIT a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Lithuanian"@en ; skos:notation "lt" .
+language:GLE a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Irish"@en ; skos:notation "ga" .
+language:MLT a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Maltese"@en ; skos:notation "mt" .
+language:RUS a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Russian"@en ; skos:notation "ru" .
+language:UKR a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Ukrainian"@en ; skos:notation "uk" .
+language:TUR a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Turkish"@en ; skos:notation "tr" .
+language:ARA a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Arabic"@en ; skos:notation "ar" .
+language:ZHO a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Chinese"@en ; skos:notation "zh" .
+language:JPN a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Japanese"@en ; skos:notation "ja" .
+language:KOR a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Korean"@en ; skos:notation "ko" .
+language:HIN a skos:Concept ; skos:inScheme ccv:Language ; skos:topConceptOf ccv:Language ;
+  skos:prefLabel "Hindi"@en ; skos:notation "hi" .

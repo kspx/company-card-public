@@ -1,0 +1,443 @@
+.stories-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.stories-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    h1 { margin: 0 0 4px; font-size: 1.6rem; font-weight: 600; }
+    .subtitle { margin: 0; color: rgba(0,0,0,.6); font-size: .9rem; max-width: 680px; }
+
+    app-public-nav { margin-left: auto; }
+}
+
+.tab-content { padding: 24px 0; }
+
+.tab-description {
+    color: rgba(0,0,0,.6);
+    font-size: .9rem;
+    margin: 0 0 20px;
+    max-width: 760px;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+
+    .search-field { flex: 1; min-width: 240px; }
+}
+
+.loading-state,
+.error-state {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 48px 0;
+    justify-content: center;
+    color: rgba(0,0,0,.54);
+}
+
+.error-state mat-icon { color: #e53935; }
+
+.empty-state {
+    text-align: center;
+    color: rgba(0,0,0,.38);
+    padding: 48px 0;
+    font-size: 1rem;
+}
+
+/* ── Banner helpers ──────────────────────────────────────────────────────────── */
+
+.warn-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: .88rem;
+    background: #fff3e0;
+    border-left: 4px solid #f57c00;
+    color: #e65100;
+    mat-icon { color: #f57c00; }
+}
+
+/* ── Story tables ─────────────────────────────────────────────────────────────── */
+
+.story-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+
+    th {
+        text-align: left;
+        padding: 8px 12px;
+        border-bottom: 2px solid rgba(0,0,0,.12);
+        color: rgba(0,0,0,.6);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(0,0,0,.06);
+        vertical-align: middle;
+    }
+
+    tr:hover td { background: rgba(0,0,0,.02); }
+
+    .num-col { text-align: right; }
+
+    .person-cell { font-weight: 500; }
+
+    .holders-cell { color: rgba(0,0,0,.6); font-size: .82rem; }
+
+    .rank-col {
+        width: 1%;
+        white-space: nowrap;
+        text-align: right;
+        color: rgba(0,0,0,.4);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .metric-col { width: 220px; }
+}
+
+/* ── Leaderboard metric bar (Top Contributors, Cross-client Versatility) ───────── */
+
+.metric-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.metric-bar {
+    position: relative;
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(0,0,0,.06);
+    overflow: hidden;
+}
+
+.metric-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 4px;
+    min-width: 2px;
+    background: #5c6bc0;
+}
+
+.metric-val {
+    min-width: 2.5em;
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: rgba(0,0,0,.75);
+}
+
+/* Declared vs Observed — person groups */
+.person-groups { display: flex; flex-direction: column; gap: 16px; }
+
+.person-group {
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.person-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.08);
+
+    .person-group-name {
+        font-weight: 600;
+        font-size: .95rem;
+    }
+
+    .person-group-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .meta-stat {
+            font-size: .82rem;
+            color: rgba(0,0,0,.55);
+        }
+    }
+}
+
+.skill-subtable {
+    margin: 0;
+
+    th, td { padding: 6px 16px; }
+    th { background: transparent; }
+    tr:last-child td { border-bottom: none; }
+}
+
+.table-legend {
+    margin-top: 16px;
+    font-size: .8rem;
+    color: rgba(0,0,0,.5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ── Signal badges ────────────────────────────────────────────────────────────── */
+
+.signal-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: .78rem;
+    font-weight: 600;
+    white-space: nowrap;
+
+    &.signal-good    { background: #e8f5e9; color: #2e7d32; }
+    &.signal-ok      { background: #fff8e1; color: #f57f17; }
+    &.signal-warn    { background: #fce4ec; color: #c62828; }
+    &.signal-neutral { background: rgba(0,0,0,.06); color: rgba(0,0,0,.45); }
+}
+
+/* ── Employee Journey timeline ────────────────────────────────────────────────── */
+
+$journey-label-width: 180px;
+
+.journey-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.journey-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .8rem;
+    color: rgba(0,0,0,.7);
+}
+
+.journey-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex: 0 0 12px;
+}
+
+.journey { width: 100%; }
+
+.journey-axis {
+    position: relative;
+    height: 18px;
+    margin-left: $journey-label-width;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    margin-bottom: 6px;
+}
+
+.journey-axis-tick {
+    position: absolute;
+    bottom: 2px;
+    transform: translateX(-50%);
+    font-size: .72rem;
+    color: rgba(0,0,0,.45);
+    white-space: nowrap;
+}
+
+.journey-track {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 3px 0;
+
+    &:hover .journey-lane { background: rgba(0,0,0,.05); }
+}
+
+.journey-track-label {
+    flex: 0 0 $journey-label-width;
+    width: $journey-label-width;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .journey-track-name {
+        font-size: .85rem;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .journey-track-meta {
+        font-size: .72rem;
+        color: rgba(0,0,0,.45);
+    }
+}
+
+.journey-lane {
+    position: relative;
+    flex: 1;
+    height: 22px;
+    background: rgba(0,0,0,.03);
+    border-radius: 4px;
+}
+
+.journey-seg {
+    position: absolute;
+    top: 3px;
+    height: 16px;
+    min-width: 4px;
+    border-radius: 3px;
+    opacity: .88;
+    cursor: default;
+    transition: opacity .12s ease;
+
+    &:hover { opacity: 1; }
+}
+
+/* ── Client cards (Delivery Risk, Continuity) ─────────────────────────────────── */
+
+.client-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.client-card {
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 8px;
+    padding: 12px 16px;
+    background: #fff;
+    transition: box-shadow .12s ease;
+
+    &:hover { box-shadow: 0 1px 6px rgba(0,0,0,.08); }
+}
+
+.client-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+
+    .client-card-name { font-weight: 600; font-size: .95rem; }
+}
+
+.conc-bar {
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(0,0,0,.06);
+    overflow: hidden;
+}
+
+.conc-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 4px;
+    min-width: 2px;
+
+    &.level-high { background: #e57373; }
+    &.level-mid  { background: #ffb74d; }
+    &.level-low  { background: #81c784; }
+}
+
+.conc-label {
+    margin-top: 6px;
+    font-size: .8rem;
+    color: rgba(0,0,0,.55);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+
+    strong { color: rgba(0,0,0,.75); }
+}
+
+.star-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    color: #f5a623;
+    vertical-align: middle;
+}
+
+.disc-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(0,0,0,.05);
+
+    &:first-of-type { border-top: none; }
+}
+
+.disc-label {
+    flex: 0 0 80px;
+    font-weight: 600;
+    font-size: .85rem;
+    color: rgba(0,0,0,.7);
+}
+
+.disc-body {
+    flex: 1;
+    min-width: 0;
+
+    .conc-label { margin-top: 4px; }
+}
+
+/* ── Active/history toggle (Meet the Team) ────────────────────────────────────── */
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.toggle-hint {
+    font-size: .8rem;
+    color: rgba(0,0,0,.55);
+
+    strong { color: rgba(0,0,0,.75); }
+}
+
+.story-table tr.row-muted td {
+    color: rgba(0,0,0,.4);
+    background: rgba(0,0,0,.015);
+}
+
+.former-tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: .68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    background: rgba(0,0,0,.06);
+    color: rgba(0,0,0,.45);
+    vertical-align: middle;
+}

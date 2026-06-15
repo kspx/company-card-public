@@ -1,0 +1,2 @@
+rootProject.name = 'company-card-forms'
+include('backend', 'frontend')

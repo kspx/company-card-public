@@ -1,0 +1,41 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:ProjectType a skos:ConceptScheme ;
+  skos:prefLabel "Project Type"@en ;
+  dcterms:description "Classifies projects by their nature: client-commissioned, internal, open-source, or R&D."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:CLIENT_PROJECT, ccv:INTERNAL_PROJECT, ccv:OPEN_SOURCE, ccv:RD_PROJECT .
+
+ccv:CLIENT_PROJECT a skos:Concept ;
+  skos:inScheme ccv:ProjectType ;
+  skos:topConceptOf ccv:ProjectType ;
+  skos:prefLabel "Client Project"@en ;
+  skos:altLabel "External Project"@en ;
+  skos:definition "A project commissioned and funded by an external client organization."@en ;
+  skos:notation "CLIENT_PROJECT" .
+
+ccv:INTERNAL_PROJECT a skos:Concept ;
+  skos:inScheme ccv:ProjectType ;
+  skos:topConceptOf ccv:ProjectType ;
+  skos:prefLabel "Internal Project"@en ;
+  skos:altLabel "In-house Project"@en ;
+  skos:definition "A project initiated and funded internally, without an external client."@en ;
+  skos:notation "INTERNAL_PROJECT" .
+
+ccv:OPEN_SOURCE a skos:Concept ;
+  skos:inScheme ccv:ProjectType ;
+  skos:topConceptOf ccv:ProjectType ;
+  skos:prefLabel "Open Source"@en ;
+  skos:definition "A publicly available project developed and maintained as open-source software."@en ;
+  skos:notation "OPEN_SOURCE" .
+
+ccv:RD_PROJECT a skos:Concept ;
+  skos:inScheme ccv:ProjectType ;
+  skos:topConceptOf ccv:ProjectType ;
+  skos:prefLabel "R&D"@en ;
+  skos:altLabel "Research and Development"@en ;
+  skos:definition "A research or innovation project, typically exploratory and not directly commissioned by a client."@en ;
+  skos:notation "RD_PROJECT" .

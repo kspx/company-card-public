@@ -1,0 +1,1442 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix cc: <https://ontology.cogni.zone/company-card#> .
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix schema: <https://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix esco: <http://data.europa.eu/esco/model#> .
+@prefix rov: <http://www.w3.org/ns/regorg#> .
+@prefix adms: <http://www.w3.org/ns/adms#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+cc:OrganizationShape a sh:NodeShape ;
+  sh:targetClass cc:Organization ;
+
+  # Core identity
+  sh:property [
+    sh:path rov:legalName ;
+    sh:name "Legal name"@en ;
+    sh:description "The legally registered name of the organization."@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Organization must have a legal name."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path skos:altLabel ;
+    sh:name "Alternate name"@en ;
+    sh:description "An alternative or trading name for the organization."@en ;
+    sh:order 2 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:description ;
+    sh:name "Description"@en ;
+    sh:description "A short description of the organization."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:url ;
+    sh:name "Website URL"@en ;
+    sh:description "The organization's official website."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path schema:email ;
+    sh:name "Email"@en ;
+    sh:description "The organization's primary contact email."@en ;
+    sh:order 5 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:pattern "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$" ;
+    sh:message "Must be a valid email address."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:image ;
+    sh:name "Logo"@en ;
+    sh:description "URL of the organization's logo or image."@en ;
+    sh:order 6 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path schema:sameAs ;
+    sh:name "External links"@en ;
+    sh:description "Links to external identifiers such as LinkedIn and website profiles."@en ;
+    sh:order 7 ;
+    sh:datatype xsd:anyURI ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+
+  # Classification
+  sh:property [
+    sh:path rov:orgType ;
+    sh:name "Organization type"@en ;
+    sh:description "The legal form of the organization."@en ;
+    sh:order 10 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:CompanyType ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path rov:orgStatus ;
+    sh:name "Status"@en ;
+    sh:description "The operational status of the organization."@en ;
+    sh:order 11 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:OrganizationStatus ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path rov:orgActivity ;
+    sh:name "Economic activity (NACE)"@en ;
+    sh:description "The economic activity classification according to NACE Rev. 2."@en ;
+    sh:order 12 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme <http://data.europa.eu/ux2/nace2/nace2> ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path rov:registration ;
+    sh:name "Registration"@en ;
+    sh:description "The official registration identifier that confers legal status."@en ;
+    sh:order 14 ;
+    sh:class adms:Identifier ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Size and dates
+  sh:property [
+    sh:path schema:foundingDate ;
+    sh:name "Founding date"@en ;
+    sh:description "The date the organization was created."@en ;
+    sh:order 20 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:numberOfEmployees ;
+    sh:name "Number of employees"@en ;
+    sh:description "Total number of employees in the organization."@en ;
+    sh:order 21 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:companySize ;
+    sh:name "Company size"@en ;
+    sh:description "Classification of the organization's size."@en ;
+    sh:order 22 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:CompanySize ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Geographic and services
+  sh:property [
+    sh:path cc:operatesInCountry ;
+    sh:name "Country of operation"@en ;
+    sh:description "Countries where the organization has operations."@en ;
+    sh:order 30 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:Country ;
+    sh:message "Organization must operate in at least one country."@en ;
+  ] ;
+  sh:property [
+    sh:path cc:offersServiceType ;
+    sh:name "Service types"@en ;
+    sh:description "Types of services offered by the organization."@en ;
+    sh:order 31 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:ServiceType ;
+  ] ;
+  sh:property [
+    sh:path cc:industrySector ;
+    sh:name "Industry sector"@en ;
+    sh:description "High-level industry sector. For granular NACE classification use Economic activity."@en ;
+    sh:order 32 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:IndustrySector ;
+  ] ;
+  # People
+  sh:property [
+    sh:path cc:recruitingContact ;
+    sh:name "Recruiting contact"@en ;
+    sh:description "Primary contact person for recruitment inquiries."@en ;
+    sh:order 41 ;
+    sh:class cc:Person ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Offices
+  sh:property [
+    sh:path cc:hasOffice ;
+    sh:name "Offices"@en ;
+    sh:description "Physical office locations of this organization."@en ;
+    sh:order 50 ;
+    sh:class cc:Office ;
+    cc:createOnly true ;
+  ] ;
+
+  # Relationships
+  sh:property [
+    sh:path cc:hasTeam ;
+    sh:name "Teams"@en ;
+    sh:description "Teams within the organization."@en ;
+    sh:order 60 ;
+    sh:class cc:Team ;
+    cc:createOnly true ;
+  ] ;
+  sh:property [
+    sh:path cc:hasEngagement ;
+    sh:name "Engagements"@en ;
+    sh:description "Business engagements of this organization."@en ;
+    sh:order 62 ;
+    sh:class cc:Engagement ;
+    cc:createOnly true ;
+  ] ;
+  sh:property [
+    sh:path cc:requestedProject ;
+    sh:name "Commissioned projects"@en ;
+    sh:description "Projects commissioned by this organization as a client."@en ;
+    sh:order 63 ;
+    sh:class cc:Project ;
+  ] ;
+  sh:property [
+    sh:path cc:hasOrganizationalCertification ;
+    sh:name "Certifications"@en ;
+    sh:description "Certifications or accreditations held by the organization."@en ;
+    sh:order 64 ;
+    sh:class cc:Certification ;
+    cc:createOnly true ;
+  ] ;
+  sh:property [
+    sh:path cc:issues ;
+    sh:name "Issues certification types"@en ;
+    sh:description "Certification programs issued or awarded by this organization."@en ;
+    sh:order 65 ;
+    sh:class cc:CertificationType ;
+  ] ;
+  sh:property [
+    sh:path cc:employs ;
+    sh:name "Employees"@en ;
+    sh:description "Employment records where this organization is the employer."@en ;
+    sh:order 66 ;
+    sh:class cc:Employment ;
+    cc:noCreate true ;
+  ] ;
+
+  # Open source and financials
+  sh:property [
+    sh:path cc:hasOpenSourceRepo ;
+    sh:name "Open source repositories"@en ;
+    sh:description "Links to open source code repositories maintained by the organization."@en ;
+    sh:order 70 ;
+    sh:datatype xsd:anyURI ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  .
+
+# PERSON
+
+cc:PersonShape a sh:NodeShape ;
+  sh:targetClass cc:Person ;
+
+  # Identity
+  sh:property [
+    sh:path schema:givenName ;
+    sh:name "Given name"@en ;
+    sh:description "The person's first name."@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Person must have a given name."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path schema:familyName ;
+    sh:name "Family name"@en ;
+    sh:description "The person's last name."@en ;
+    sh:order 2 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Person must have a family name."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path schema:description ;
+    sh:name "Description"@en ;
+    sh:description "A short biography or description of the person."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:email ;
+    sh:name "Email"@en ;
+    sh:description "The person's email address."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:pattern "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$" ;
+    sh:message "Must be a valid email address."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:telephone ;
+    sh:name "Telephone"@en ;
+    sh:description "The person's phone number."@en ;
+    sh:order 5 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:image ;
+    sh:name "Photo"@en ;
+    sh:description "URL of the person's photo or avatar."@en ;
+    sh:order 7 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path schema:sameAs ;
+    sh:name "External links"@en ;
+    sh:description "Links to external profiles such as LinkedIn, GitHub, and ORCID."@en ;
+    sh:order 8 ;
+    sh:datatype xsd:anyURI ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path adms:identifier ;
+    sh:name "External identifiers"@en ;
+    sh:description "External account identifiers (Slack, GitHub). Set automatically on import; each carries its scheme via dcterms:type."@en ;
+    sh:order 10 ;
+    sh:class adms:Identifier ;
+    sh:node cc:IdentifierShape ;
+  ] ;
+  sh:property [
+    sh:path cc:workedFor ;
+    sh:name "Worked for"@en ;
+    sh:description "Client organisations this person has contributed to (inferred from GitHub activity)."@en ;
+    sh:order 30 ;
+    sh:class cc:Organization ;
+    cc:computed true ;
+  ] ;
+
+  # Personal details
+  sh:property [
+    sh:path schema:birthDate ;
+    sh:name "Date of birth"@en ;
+    sh:description "The person's date of birth."@en ;
+    sh:order 9 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:nationality ;
+    sh:name "Nationality"@en ;
+    sh:description "The nationality or nationalities of the person."@en ;
+    sh:order 12 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:Country ;
+  ] ;
+  sh:property [
+    sh:path cc:basedInCity ;
+    sh:name "Based in city"@en ;
+    sh:description "The city where this person is primarily based."@en ;
+    sh:order 13 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:workLocation ;
+    sh:name "Work location preference"@en ;
+    sh:description "Preferred work modality: remote, hybrid, on-site, or client-site."@en ;
+    sh:order 14 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:WorkLocation ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Current status
+  sh:property [
+    sh:path cc:availabilityStatus ;
+    sh:name "Availability"@en ;
+    sh:description "Current availability status: available, on project, or on leave."@en ;
+    sh:order 15 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:Availability ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Languages
+  sh:property [
+    sh:path cc:hasLanguageSkill ;
+    sh:name "Languages"@en ;
+    sh:description "Languages this person speaks, each with its CEFR level."@en ;
+    sh:order 11 ;
+    sh:class cc:LanguageSkill ;
+    cc:createOnly true ;
+  ] ;
+
+  # Teams and mentorship
+  sh:property [
+    sh:path cc:hasTeamMembership ;
+    sh:name "Team memberships"@en ;
+    sh:description "Teams this person belongs to, with role and dates."@en ;
+    sh:order 20 ;
+    sh:class cc:TeamMembership ;
+    cc:createOnly true ;
+  ] ;
+  sh:property [
+    sh:path cc:mentoredBy ;
+    sh:name "Mentored by"@en ;
+    sh:description "A person who mentors this person."@en ;
+    sh:order 23 ;
+    sh:class cc:Person ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:mentors ;
+    sh:name "Mentors"@en ;
+    sh:description "People mentored by this person."@en ;
+    sh:order 24 ;
+    sh:class cc:Person ;
+  ] ;
+
+  # Employment and certifications
+  sh:property [
+    sh:path cc:hasEmployment ;
+    sh:name "Employments"@en ;
+    sh:description "Employment records at organizations."@en ;
+    sh:order 30 ;
+    sh:class cc:Employment ;
+    cc:createOnly true ;
+  ] ;
+  sh:property [
+    sh:path cc:hasPersonalCertification ;
+    sh:name "Certifications"@en ;
+    sh:description "Professional certifications held by this person."@en ;
+    sh:order 31 ;
+    sh:class cc:Certification ;
+    cc:createOnly true ;
+  ] ;
+
+  # Skill assessments
+  sh:property [
+    sh:path cc:hasSkillAssessment ;
+    sh:name "Skill assessments"@en ;
+    sh:description "Structured proficiency assessments per skill, including level and years of experience."@en ;
+    sh:order 35 ;
+    sh:class cc:SkillAssessment ;
+    cc:createOnly true ;
+  ] ;
+
+  # Projects
+  sh:property [
+    sh:path cc:hasProjectContribution ;
+    sh:name "Project contributions"@en ;
+    sh:description "Contributions this person has made to projects."@en ;
+    sh:order 40 ;
+    sh:class cc:ProjectContribution ;
+    cc:createOnly true ;
+  ] ;
+  sh:property [
+    sh:path cc:managesProject ;
+    sh:name "Manages project"@en ;
+    sh:description "Projects managed by this person."@en ;
+    sh:order 41 ;
+    sh:class cc:Project ;
+  ] .
+
+# EMPLOYMENT
+
+cc:EmploymentShape a sh:NodeShape ;
+  sh:targetClass cc:Employment ;
+
+  sh:property [
+    sh:path cc:employmentOf ;
+    sh:name "Person"@en ;
+    sh:description "The person this employment belongs to."@en ;
+    sh:order 0 ;
+    sh:class cc:Person ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Employment must be linked to a person."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:employmentWith ;
+    sh:name "Organization"@en ;
+    sh:description "The organization employing the person."@en ;
+    sh:order 1 ;
+    sh:class cc:Organization ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Employment must be linked to an organization."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:employmentType ;
+    sh:name "Employment type"@en ;
+    sh:description "Full-time, part-time, contractor, or freelancer."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:EmploymentType ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Employment must have a type (full-time, part-time, contractor, or freelancer)."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:startDate ;
+    sh:name "Start date"@en ;
+    sh:description "The date this employment started."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:endDate ;
+    sh:name "End date"@en ;
+    sh:description "The date this employment ended (empty if ongoing)."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:employmentRole ;
+    sh:name "Role"@en ;
+    sh:description "Job title or role within the organization."@en ;
+    sh:order 5 ;
+    sh:class esco:Occupation ;
+  ] ;
+  sh:property [
+    sh:path cc:seniorityLevel ;
+    sh:name "Seniority level"@en ;
+    sh:description "Junior, mid-level, senior, lead, or principal."@en ;
+    sh:order 6 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:Seniority ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:employmentRate ;
+    sh:name "Rate"@en ;
+    sh:description "Hourly or daily rate for this employment."@en ;
+    sh:order 7 ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:workLocation ;
+    sh:name "Work location"@en ;
+    sh:description "Work modality for this employment: remote, hybrid, on-site, or client-site."@en ;
+    sh:order 8 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:WorkLocation ;
+    sh:maxCount 1 ;
+  ] .
+
+# TEAM (cc:Team ⊑ org:OrganizationalUnit)
+
+cc:TeamShape a sh:NodeShape ;
+  sh:targetClass cc:Team ;
+
+  sh:property [
+    sh:path cc:teamOf ;
+    sh:name "Organization"@en ;
+    sh:description "The organization this team belongs to."@en ;
+    sh:order 0 ;
+    sh:class cc:Organization ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Team must be linked to an organization."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:teamName ;
+    sh:name "Team name"@en ;
+    sh:description "The name of the team."@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Team must have a name."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:teamDescription ;
+    sh:name "Description"@en ;
+    sh:description "A description of the team's focus and responsibilities."@en ;
+    sh:order 2 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:teamType ;
+    sh:name "Team type"@en ;
+    sh:description "The functional type of the team: development, QA, design, DevOps, or data."@en ;
+    sh:order 3 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:TeamType ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:developsProject ;
+    sh:name "Projects"@en ;
+    sh:description "Projects developed by this team."@en ;
+    sh:order 4 ;
+    sh:class cc:Project ;
+  ] ;
+  sh:property [
+    sh:path cc:teamHasMembership ;
+    sh:name "Memberships"@en ;
+    sh:description "People who are or were members of this team, with role and dates."@en ;
+    sh:order 5 ;
+    sh:class cc:TeamMembership ;
+    cc:createOnly true ;
+  ] .
+
+# TEAM MEMBERSHIP (cc:TeamMembership — reified Person↔Team)
+
+cc:TeamMembershipShape a sh:NodeShape ;
+  sh:targetClass cc:TeamMembership ;
+
+  sh:property [
+    sh:path cc:membershipOf ;
+    sh:name "Person"@en ;
+    sh:description "The person who holds this team membership."@en ;
+    sh:order 0 ;
+    sh:class cc:Person ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Membership must be linked to a person."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:membershipIn ;
+    sh:name "Team"@en ;
+    sh:description "The team this person belongs to."@en ;
+    sh:order 1 ;
+    sh:class cc:Team ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Membership must be linked to a team."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:membershipRole ;
+    sh:name "Role"@en ;
+    sh:description "The role this person plays in the team: leader, manager, or regular member."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:MembershipRole ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:startDate ;
+    sh:name "Start date"@en ;
+    sh:description "The date this person joined the team. Pre-filled from the earliest contribution on any of the team's projects; editable."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:endDate ;
+    sh:name "End date"@en ;
+    sh:description "The date this person left the team (empty if still a member). On derived client squads it is auto-filled with the last contribution date when that activity is older than two years; editable."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] .
+
+# PROJECT (cc:Project ⊑ doap:Project)
+
+cc:ProjectShape a sh:NodeShape ;
+  sh:targetClass cc:Project ;
+
+  # Core project fields
+  sh:property [
+    sh:path doap:name ;
+    sh:name "Project name"@en ;
+    sh:description "The name of the project."@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Project must have a name."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path doap:description ;
+    sh:name "Description"@en ;
+    sh:description "A description of the project."@en ;
+    sh:order 2 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path doap:created ;
+    sh:name "Start date"@en ;
+    sh:description "The date this project was created or initiated."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:date ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Project must have a start date."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:endDate ;
+    sh:name "End date"@en ;
+    sh:description "The date this project ended (empty if ongoing)."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:projectStatus ;
+    sh:name "Status"@en ;
+    sh:description "Current status: ongoing, completed, paused, or cancelled."@en ;
+    sh:order 5 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:ProjectStatus ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Project must have a status."@en ;
+  ] ;
+  sh:property [
+    sh:path cc:projectType ;
+    sh:name "Project type"@en ;
+    sh:description "Whether this is a client project, internal initiative, open-source, or R&D."@en ;
+    sh:order 6 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:ProjectType ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:projectDomain ;
+    sh:name "Project domain"@en ;
+    sh:description "The industry domain the project serves."@en ;
+    sh:order 7 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:IndustrySector ;
+  ] ;
+  sh:property [
+    sh:path cc:confidentialityLevel ;
+    sh:name "Confidentiality"@en ;
+    sh:description "Controls visibility: public, internal, or confidential."@en ;
+    sh:order 8 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:ConfidentialityLevel ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:targetCountry ;
+    sh:name "Target country"@en ;
+    sh:description "Countries where the project is deployed or used."@en ;
+    sh:order 9 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:Country ;
+  ] ;
+
+  # Budget and effort
+  sh:property [
+    sh:path cc:projectBudget ;
+    sh:name "Budget"@en ;
+    sh:description "The allocated budget for the project."@en ;
+    sh:order 10 ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:projectEffort ;
+    sh:name "Effort (person-days)"@en ;
+    sh:description "Estimated or actual effort in person-days."@en ;
+    sh:order 11 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+  ] ;
+
+  # Parties
+  sh:property [
+    sh:path cc:projectOf ;
+    sh:name "Delivering organization"@en ;
+    sh:description "The organization that develops and delivers this project."@en ;
+    sh:order 19 ;
+    sh:class cc:Organization ;
+    sh:maxCount 1 ;
+    cc:noCreate true ;
+  ] ;
+  sh:property [
+    sh:path cc:requestedBy ;
+    sh:name "Client organization"@en ;
+    sh:description "The client organization that commissioned this project. Leave empty for internal projects."@en ;
+    sh:order 20 ;
+    sh:class cc:Organization ;
+    sh:maxCount 1 ;
+    cc:noCreate true ;
+  ] ;
+  sh:property [
+    sh:path cc:developedBy ;
+    sh:name "Development team"@en ;
+    sh:description "The team responsible for developing the project."@en ;
+    sh:order 21 ;
+    sh:class cc:Team ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:projectManager ;
+    sh:name "Project manager"@en ;
+    sh:description "The person managing the project."@en ;
+    sh:order 22 ;
+    sh:class cc:Person ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Project must have a project manager."@en ;
+  ] ;
+  sh:property [
+    sh:path cc:projectHasContribution ;
+    sh:name "Contributions"@en ;
+    sh:description "Contributions made to this project."@en ;
+    sh:order 23 ;
+    sh:class cc:ProjectContribution ;
+  ] ;
+
+  # Technologies
+  sh:property [
+    sh:path cc:usesTechnology ;
+    sh:name "Technologies"@en ;
+    sh:description "Technologies, frameworks, and programming languages used in the project."@en ;
+    sh:order 30 ;
+    sh:class esco:Skill ;
+  ] ;
+
+  # Artefacts and links
+  sh:property [
+    sh:path doap:repository ;
+    sh:name "Repositories"@en ;
+    sh:description "Links to the project's source code repositories on GitHub (one per repository). Multiple repos can be added if the project spans several codebases."@en ;
+    sh:order 40 ;
+    sh:datatype xsd:anyURI ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path doap:wiki ;
+    sh:name "Wiki"@en ;
+    sh:description "Link to the project's wiki page."@en ;
+    sh:order 41 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path doap:homepage ;
+    sh:name "Homepage"@en ;
+    sh:description "Link to the project's homepage."@en ;
+    sh:order 42 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path doap:documentation ;
+    sh:name "Documentation"@en ;
+    sh:description "Link to project documentation."@en ;
+    sh:order 44 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path cc:hasProductionApp ;
+    sh:name "Production app"@en ;
+    sh:description "Link to the live production application."@en ;
+    sh:order 45 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path doap:bug-database ;
+    sh:name "Issue tracker"@en ;
+    sh:description "Link to the project's bug tracker or issue tracker."@en ;
+    sh:order 46 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+  sh:property [
+    sh:path doap:license ;
+    sh:name "License"@en ;
+    sh:description "License of the project software, as a SPDX URI (https://spdx.org/licenses/)."@en ;
+    sh:order 47 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] ;
+
+  # GitHub-synced metadata
+  sh:property [
+    sh:path schema:keywords ;
+    sh:name "Topics"@en ;
+    sh:description "GitHub repository topics (tags). Synced automatically from GitHub."@en ;
+    sh:order 48 ;
+    sh:datatype xsd:string ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path schema:dateModified ;
+    sh:name "Last activity"@en ;
+    sh:description "Date of the last push to the GitHub repository. Synced automatically from GitHub."@en ;
+    sh:order 49 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path cc:isArchived ;
+    sh:name "Archived"@en ;
+    sh:description "Whether the GitHub repository is archived (read-only). Synced automatically from GitHub."@en ;
+    sh:order 50 ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path doap:programming-language ;
+    sh:name "Programming languages"@en ;
+    sh:description "Programming languages detected in the GitHub repository, ordered by volume. Synced automatically from GitHub."@en ;
+    sh:order 51 ;
+    sh:datatype xsd:string ;
+    cc:computed true ;
+  ] .
+
+# ENGAGEMENT
+
+cc:EngagementShape a sh:NodeShape ;
+  sh:targetClass cc:Engagement ;
+
+  sh:property [
+    sh:path cc:engagementOf ;
+    sh:name "Our organization"@en ;
+    sh:description "The Cognizone organization this engagement belongs to."@en ;
+    sh:order 0 ;
+    sh:class cc:Organization ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Engagement must be linked to an organization."@en ;
+    cc:noCreate true ;
+  ] ;
+  sh:property [
+    sh:path cc:engagementWith ;
+    sh:name "Organization"@en ;
+    sh:description "The other organization in the engagement (client, partner, or vendor)."@en ;
+    sh:order 1 ;
+    sh:class cc:Organization ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Engagement must be linked to another organization."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:engagementType ;
+    sh:name "Type"@en ;
+    sh:description "The type of engagement: client, partnership, or vendor."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:EngagementType ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Engagement must have a type (client, partnership, or vendor)."@en ;
+  ] ;
+  sh:property [
+    sh:path cc:engagementStatus ;
+    sh:name "Status"@en ;
+    sh:description "Current status: prospective, active, paused, completed, or cancelled."@en ;
+    sh:order 3 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:EngagementStatus ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Engagement must have a status."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:startDate ;
+    sh:name "Start date"@en ;
+    sh:description "The date this engagement started."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:date ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Engagement must have a start date."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:endDate ;
+    sh:name "End date"@en ;
+    sh:description "The date this engagement ended (empty if ongoing)."@en ;
+    sh:order 5 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:contractValue ;
+    sh:name "Contract value"@en ;
+    sh:description "The total financial value of the engagement contract."@en ;
+    sh:order 6 ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+  ] .
+
+# CERTIFICATION (base shape — applies to both subclasses via sh:targetClass)
+
+# CERTIFICATION TYPE (the program / standard — shared across holders)
+
+cc:CertificationTypeShape a sh:NodeShape ;
+  sh:targetClass cc:CertificationType ;
+
+  sh:property [
+    sh:path cc:certificationName ;
+    sh:name "Name"@en ;
+    sh:description "The full name of the certification program."@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Certification type must have a name."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path schema:description ;
+    sh:name "Description"@en ;
+    sh:description "A short description of what this certification covers."@en ;
+    sh:order 2 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:issuedBy ;
+    sh:name "Issued by"@en ;
+    sh:description "The organization that offers and issues this certification program."@en ;
+    sh:order 3 ;
+    sh:class cc:Organization ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Certification type must be issued by an organization."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path schema:url ;
+    sh:name "Program URL"@en ;
+    sh:description "Link to the official certification program page."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] .
+
+# CERTIFICATION (the holding — per person or organization)
+
+cc:CertificationShape a sh:NodeShape ;
+  sh:targetClass cc:Certification ;
+
+  sh:property [
+    sh:path cc:personalCertificationOf ;
+    sh:name "Person"@en ;
+    sh:description "The person who holds this certification."@en ;
+    sh:order 1 ;
+    sh:class cc:Person ;
+    sh:maxCount 1 ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:organizationalCertificationOf ;
+    sh:name "Organization"@en ;
+    sh:description "The organization that holds this certification."@en ;
+    sh:order 2 ;
+    sh:class cc:Organization ;
+    sh:maxCount 1 ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:certificationOf ;
+    sh:name "Certification type"@en ;
+    sh:description "The certification program this holding refers to."@en ;
+    sh:order 0 ;
+    sh:class cc:CertificationType ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    cc:identifierPart true ;
+    sh:message "Certification must reference a certification type."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:startDate ;
+    sh:name "Issue date"@en ;
+    sh:description "The date this certification was awarded to the holder."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:date ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Certification must have an issue date."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:endDate ;
+    sh:name "Expiry date"@en ;
+    sh:description "The date this certification expires (empty if it does not expire)."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:certificationLevel ;
+    sh:name "Level"@en ;
+    sh:description "The proficiency level achieved: associate, professional, expert, or master."@en ;
+    sh:order 5 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:CertificationLevel ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:credentialId ;
+    sh:name "Credential ID"@en ;
+    sh:description "The unique badge or credential ID assigned to this specific holder."@en ;
+    sh:order 6 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:certificationUrl ;
+    sh:name "Verification URL"@en ;
+    sh:description "URL to verify or view this specific holding online."@en ;
+    sh:order 7 ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:pattern "^https?://" ;
+    sh:message "Must be a valid URL starting with http:// or https://"@en ;
+  ] .
+
+# PERSONAL CERTIFICATION
+
+cc:PersonalCertificationShape a sh:NodeShape ;
+  sh:targetClass cc:PersonalCertification ;
+
+  sh:property [
+    sh:path cc:personalCertificationOf ;
+    sh:name "Holder (person)"@en ;
+    sh:description "The person who holds this certification."@en ;
+    sh:order 0 ;
+    sh:class cc:Person ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Personal certification must be linked to a person."@en ;
+    cc:noCreate true ;
+  ] .
+
+# ORGANIZATIONAL CERTIFICATION
+
+cc:OrganizationalCertificationShape a sh:NodeShape ;
+  sh:targetClass cc:OrganizationalCertification ;
+
+  sh:property [
+    sh:path cc:organizationalCertificationOf ;
+    sh:name "Holder (organization)"@en ;
+    sh:description "The organization that holds this certification."@en ;
+    sh:order 0 ;
+    sh:class cc:Organization ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Organizational certification must be linked to an organization."@en ;
+    cc:noCreate true ;
+  ] .
+
+# PROJECT CONTRIBUTION (reified Person + Project + Role)
+
+cc:ProjectContributionShape a sh:NodeShape ;
+  sh:targetClass cc:ProjectContribution ;
+
+  sh:property [
+    sh:path cc:contributionBy ;
+    sh:name "Contributor"@en ;
+    sh:description "The person who made this contribution."@en ;
+    sh:order 0 ;
+    sh:class cc:Person ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Project contribution must be linked to a person."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:contributionTo ;
+    sh:name "Project"@en ;
+    sh:description "The project this contribution was made to."@en ;
+    sh:order 1 ;
+    sh:class cc:Project ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Project contribution must be linked to a project."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:contributionRole ;
+    sh:name "Role"@en ;
+    sh:description "The role played in this contribution (architect, developer, or designer)."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:ProjectRole ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Project contribution must have a role."@en ;
+  ] ;
+  sh:property [
+    sh:path schema:startDate ;
+    sh:name "Start date"@en ;
+    sh:description "The date this contribution started."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path schema:endDate ;
+    sh:name "End date"@en ;
+    sh:description "The date this contribution ended (empty if ongoing)."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:contributionDescription ;
+    sh:name "Description"@en ;
+    sh:description "What specifically was done in this contribution. Useful for CV generation and portfolio presentation."@en ;
+    sh:order 5 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cc:commitCount ;
+    sh:name "Commit count"@en ;
+    sh:description "Number of commits made to the project repository, sourced from the GitHub API. Provides empirical evidence of activity alongside declared role."@en ;
+    sh:order 6 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path cc:prReviewCount ;
+    sh:name "PR review count"@en ;
+    sh:description "Number of pull requests reviewed on the project repository, sourced from the GitHub API. High review count relative to commits signals senior or mentoring activity."@en ;
+    sh:order 7 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path cc:mergedPrCount ;
+    sh:name "Merged PR count"@en ;
+    sh:description "Number of pull requests authored and merged on the project repository, sourced from the GitHub API. Measures completed deliverables."@en ;
+    sh:order 8 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path cc:linesAdded ;
+    sh:name "Lines added"@en ;
+    sh:description "Total lines of code added across all commits in the project repository. Sourced from the GitHub stats API."@en ;
+    sh:order 9 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path cc:linesDeleted ;
+    sh:name "Lines deleted"@en ;
+    sh:description "Total lines of code deleted across all commits in the project repository. Sourced from the GitHub stats API."@en ;
+    sh:order 10 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] ;
+  sh:property [
+    sh:path cc:lastCommitDate ;
+    sh:name "Last commit date"@en ;
+    sh:description "Date of the most recent commit in this contribution. Sourced from the GitHub stats API."@en ;
+    sh:order 11 ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+    cc:computed true ;
+  ] .
+
+# SKILL ASSESSMENT (reified Person + Skill + proficiency + years)
+
+cc:SkillAssessmentShape a sh:NodeShape ;
+  sh:targetClass cc:SkillAssessment ;
+
+  sh:property [
+    sh:path cc:skillAssessmentOf ;
+    sh:name "Person"@en ;
+    sh:description "The person this skill assessment belongs to."@en ;
+    sh:order 0 ;
+    sh:class cc:Person ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Skill assessment must be linked to a person."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:assessedSkill ;
+    sh:name "Skill"@en ;
+    sh:description "The skill being assessed."@en ;
+    sh:order 1 ;
+    sh:class esco:Skill ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Skill assessment must reference a skill."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:proficiencyLevel ;
+    sh:name "Proficiency level"@en ;
+    sh:description "Self-assessed or verified proficiency: beginner, intermediate, advanced, or expert."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:SkillProficiency ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Skill assessment must have a proficiency level."@en ;
+  ] ;
+  sh:property [
+    sh:path cc:yearsOfExperience ;
+    sh:name "Years of experience"@en ;
+    sh:description "Number of years of practical experience with this skill."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+  ] .
+
+# LANGUAGE SKILL (reified Person + language + CEFR level)
+
+cc:LanguageSkillShape a sh:NodeShape ;
+  sh:targetClass cc:LanguageSkill ;
+
+  sh:property [
+    sh:path cc:languageSkillOf ;
+    sh:name "Person"@en ;
+    sh:description "The person this language skill belongs to."@en ;
+    sh:order 0 ;
+    sh:class cc:Person ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Language skill must be linked to a person."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:languageSpoken ;
+    sh:name "Language"@en ;
+    sh:description "The language spoken."@en ;
+    sh:order 1 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:Language ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Language skill must reference a language."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path cc:languageLevel ;
+    sh:name "CEFR level"@en ;
+    sh:description "Proficiency on the Common European Framework scale: A1, A2, B1, B2, C1, or C2."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:CefrLevel ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Language skill must have a CEFR level."@en ;
+  ] .
+
+# IDENTIFIER (ADMS, used for rov:registration and person external identifiers)
+
+cc:IdentifierShape a sh:NodeShape ;
+  sh:targetClass adms:Identifier ;
+  sh:property [
+    sh:path skos:notation ;
+    sh:name "Notation"@en ;
+    sh:description "The literal value of the identifier or registration code."@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Identifier must have a notation (value)."@en ;
+  ] ;
+  sh:property [
+    sh:path dcterms:type ;
+    sh:name "Scheme"@en ;
+    sh:description "The identifier scheme this value belongs to. Empty for legal registrations."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:IdentifierScheme ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path foaf:page ;
+    sh:name "URL"@en ;
+    sh:description "The GitHub account's profile URL. Empty for schemes with no public page."@en ;
+    sh:order 3 ;
+    sh:nodeKind sh:IRI ;
+    sh:maxCount 1 ;
+  ] .
+
+# OFFICE (physical location of an organization)
+cc:OfficeShape a sh:NodeShape ;
+  sh:targetClass cc:Office ;
+
+  sh:property [
+    sh:path cc:officeOf ;
+    sh:name "Organization"@en ;
+    sh:description "The organization this office belongs to."@en ;
+    sh:order 0 ;
+    sh:class cc:Organization ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Office must be linked to an organization."@en ;
+    cc:noCreate true ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path locn:postName ;
+    sh:name "City"@en ;
+    sh:description "The city where this office is located."@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Office must have a city."@en ;
+    cc:identifierPart true ;
+  ] ;
+  sh:property [
+    sh:path locn:adminUnitL1 ;
+    sh:name "Country"@en ;
+    sh:description "The country where this office is located."@en ;
+    sh:order 2 ;
+    sh:class skos:Concept ;
+    cc:conceptScheme ccv:Country ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "Office must have a country."@en ;
+  ] ;
+  sh:property [
+    sh:path locn:thoroughfare ;
+    sh:name "Street address"@en ;
+    sh:description "The street name and number."@en ;
+    sh:order 3 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path locn:postCode ;
+    sh:name "Post code"@en ;
+    sh:description "The postal or ZIP code."@en ;
+    sh:order 4 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+  ] .

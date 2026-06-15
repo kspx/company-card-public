@@ -1,0 +1,52 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:CefrLevel a skos:ConceptScheme ;
+  skos:prefLabel "CEFR Language Level"@en ;
+  dcterms:description "Common European Framework of Reference for Languages proficiency levels (A1–C2)."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:A1, ccv:A2, ccv:B1, ccv:B2, ccv:C1, ccv:C2 .
+
+ccv:A1 a skos:Concept ;
+  skos:inScheme ccv:CefrLevel ;
+  skos:topConceptOf ccv:CefrLevel ;
+  skos:prefLabel "A1 — Beginner"@en ;
+  skos:definition "Basic everyday phrases."@en ;
+  skos:notation "A1" .
+
+ccv:A2 a skos:Concept ;
+  skos:inScheme ccv:CefrLevel ;
+  skos:topConceptOf ccv:CefrLevel ;
+  skos:prefLabel "A2 — Elementary"@en ;
+  skos:definition "Simple, routine communication."@en ;
+  skos:notation "A2" .
+
+ccv:B1 a skos:Concept ;
+  skos:inScheme ccv:CefrLevel ;
+  skos:topConceptOf ccv:CefrLevel ;
+  skos:prefLabel "B1 — Intermediate"@en ;
+  skos:definition "Handles familiar topics and routine situations."@en ;
+  skos:notation "B1" .
+
+ccv:B2 a skos:Concept ;
+  skos:inScheme ccv:CefrLevel ;
+  skos:topConceptOf ccv:CefrLevel ;
+  skos:prefLabel "B2 — Upper Intermediate"@en ;
+  skos:definition "Fluent on a wide range of topics."@en ;
+  skos:notation "B2" .
+
+ccv:C1 a skos:Concept ;
+  skos:inScheme ccv:CefrLevel ;
+  skos:topConceptOf ccv:CefrLevel ;
+  skos:prefLabel "C1 — Advanced"@en ;
+  skos:definition "Flexible use for complex purposes."@en ;
+  skos:notation "C1" .
+
+ccv:C2 a skos:Concept ;
+  skos:inScheme ccv:CefrLevel ;
+  skos:topConceptOf ccv:CefrLevel ;
+  skos:prefLabel "C2 — Proficient"@en ;
+  skos:definition "Near-native command."@en ;
+  skos:notation "C2" .

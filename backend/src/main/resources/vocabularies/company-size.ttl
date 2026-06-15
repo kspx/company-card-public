@@ -1,0 +1,44 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:CompanySize a skos:ConceptScheme ;
+  skos:prefLabel "Company Size"@en ;
+  dcterms:description "Classification of organization size based on EU SME definition and employee count."@en ;
+  dcterms:source <http://data.europa.eu/eli/reco/2003/361/oj> ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  dcterms:modified "2026-02-08"^^xsd:date ;
+  skos:hasTopConcept ccv:MICRO, ccv:SMALL, ccv:MEDIUM, ccv:LARGE .
+
+ccv:MICRO a skos:Concept ;
+  skos:inScheme ccv:CompanySize ;
+  skos:topConceptOf ccv:CompanySize ;
+  skos:prefLabel "Micro Enterprise"@en ;
+  skos:altLabel "Microenterprise"@en ;
+  skos:definition "Fewer than 10 employees."@en ;
+  skos:notation "MICRO" .
+
+ccv:SMALL a skos:Concept ;
+  skos:inScheme ccv:CompanySize ;
+  skos:topConceptOf ccv:CompanySize ;
+  skos:prefLabel "Small Enterprise"@en ;
+  skos:altLabel "Small Business"@en ;
+  skos:definition "10-49 employees."@en ;
+  skos:notation "SMALL" .
+
+ccv:MEDIUM a skos:Concept ;
+  skos:inScheme ccv:CompanySize ;
+  skos:topConceptOf ccv:CompanySize ;
+  skos:prefLabel "Medium Enterprise"@en ;
+  skos:altLabel "Mid-size Business"@en ;
+  skos:definition "50-249 employees."@en ;
+  skos:notation "MEDIUM" .
+
+ccv:LARGE a skos:Concept ;
+  skos:inScheme ccv:CompanySize ;
+  skos:topConceptOf ccv:CompanySize ;
+  skos:prefLabel "Large Enterprise"@en ;
+  skos:altLabel "Large Corporation"@en ;
+  skos:definition "250 or more employees."@en ;
+  skos:notation "LARGE" .

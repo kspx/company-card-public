@@ -1,0 +1,102 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:ProjectRole a skos:ConceptScheme ;
+  skos:prefLabel "Project Role"@en ;
+  dcterms:description "Roles that consultants and team members play in software projects."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  dcterms:modified "2026-02-08"^^xsd:date ;
+  skos:hasTopConcept ccv:ARCHITECT, ccv:DEVELOPER, ccv:DESIGNER, ccv:ANALYST,
+                     ccv:DATA_ENGINEER, ccv:TESTER, ccv:DEVOPS,
+                     ccv:SCRUM_MASTER, ccv:ROLE_PM, ccv:PRODUCT_OWNER,
+                     ccv:CONSULTANT .
+
+ccv:ARCHITECT a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Architect"@en ;
+  skos:altLabel "Solution Architect"@en, "Tech Architect"@en ;
+  skos:definition "Technical or solution architect responsible for system design and technology choices."@en ;
+  skos:notation "ARCHITECT" .
+
+ccv:DEVELOPER a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Developer"@en ;
+  skos:altLabel "Software Engineer"@en, "Programmer"@en ;
+  skos:definition "Software developer implementing features, writing code, and fixing bugs."@en ;
+  skos:notation "DEVELOPER" .
+
+ccv:DESIGNER a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "UX/UI Designer"@en ;
+  skos:altLabel "Designer"@en ;
+  skos:definition "User experience or user interface designer creating wireframes, prototypes, and visual designs."@en ;
+  skos:notation "DESIGNER" .
+
+ccv:ANALYST a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Business Analyst"@en ;
+  skos:altLabel "Analyst"@en, "Functional Analyst"@en ;
+  skos:definition "Analyst gathering requirements, writing specifications, and bridging business and technical teams."@en ;
+  skos:notation "ANALYST" .
+
+ccv:DATA_ENGINEER a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Data Engineer"@en ;
+  skos:altLabel "ETL Developer"@en ;
+  skos:definition "Engineer building data pipelines, ETL processes, and data platform infrastructure."@en ;
+  skos:notation "DATA_ENGINEER" .
+
+ccv:TESTER a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Tester"@en ;
+  skos:altLabel "QA Engineer"@en, "QA Specialist"@en ;
+  skos:definition "Quality assurance specialist writing and executing test plans and automation."@en ;
+  skos:notation "TESTER" .
+
+ccv:DEVOPS a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "DevOps Engineer"@en ;
+  skos:altLabel "DevOps"@en, "SRE"@en ;
+  skos:definition "Engineer managing CI/CD pipelines, infrastructure, and deployment automation."@en ;
+  skos:notation "DEVOPS" .
+
+ccv:SCRUM_MASTER a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Scrum Master"@en ;
+  skos:altLabel "Agile Coach"@en ;
+  skos:definition "Facilitator ensuring the team follows agile practices and removing impediments."@en ;
+  skos:notation "SCRUM_MASTER" .
+
+ccv:ROLE_PM a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Project Manager"@en ;
+  skos:altLabel "PM"@en, "Project Coordinator"@en ;
+  skos:definition "Manager overseeing project scope, timeline, budget, and delivery."@en ;
+  skos:notation "ROLE_PM" .
+
+ccv:PRODUCT_OWNER a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Product Owner"@en ;
+  skos:altLabel "Product Manager"@en ;
+  skos:definition "Owner defining product vision, managing the backlog, and prioritizing features."@en ;
+  skos:notation "PRODUCT_OWNER" .
+
+ccv:CONSULTANT a skos:Concept ;
+  skos:inScheme ccv:ProjectRole ;
+  skos:topConceptOf ccv:ProjectRole ;
+  skos:prefLabel "Consultant"@en ;
+  skos:altLabel "Advisor"@en, "Domain Expert"@en ;
+  skos:definition "Subject-matter expert providing advisory, analysis, or domain-specific guidance."@en ;
+  skos:notation "CONSULTANT" .

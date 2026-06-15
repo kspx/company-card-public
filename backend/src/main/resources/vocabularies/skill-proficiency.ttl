@@ -1,0 +1,38 @@
+@prefix ccv: <https://ontology.cogni.zone/company-card-vocabularies#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ccv:SkillProficiency a skos:ConceptScheme ;
+  skos:prefLabel "Skill Proficiency"@en ;
+  dcterms:description "Proficiency levels for individual skills or technologies. Used on cc:SkillAssessment to distinguish claimed from verified competence."@en ;
+  dcterms:created "2026-01-01"^^xsd:date ;
+  skos:hasTopConcept ccv:BEGINNER, ccv:INTERMEDIATE, ccv:ADVANCED, ccv:EXPERT .
+
+ccv:BEGINNER a skos:Concept ;
+  skos:inScheme ccv:SkillProficiency ;
+  skos:topConceptOf ccv:SkillProficiency ;
+  skos:prefLabel "Beginner"@en ;
+  skos:definition "Basic awareness or introductory use."@en ;
+  skos:notation "BEGINNER" .
+
+ccv:INTERMEDIATE a skos:Concept ;
+  skos:inScheme ccv:SkillProficiency ;
+  skos:topConceptOf ccv:SkillProficiency ;
+  skos:prefLabel "Intermediate"@en ;
+  skos:definition "Can apply the skill independently."@en ;
+  skos:notation "INTERMEDIATE" .
+
+ccv:ADVANCED a skos:Concept ;
+  skos:inScheme ccv:SkillProficiency ;
+  skos:topConceptOf ccv:SkillProficiency ;
+  skos:prefLabel "Advanced"@en ;
+  skos:definition "Deep fluency; can design solutions and guide others."@en ;
+  skos:notation "ADVANCED" .
+
+ccv:EXPERT a skos:Concept ;
+  skos:inScheme ccv:SkillProficiency ;
+  skos:topConceptOf ccv:SkillProficiency ;
+  skos:prefLabel "Expert"@en ;
+  skos:definition "Recognized authority who sets standards and trains others."@en ;
+  skos:notation "EXPERT" .

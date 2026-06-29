@@ -120,4 +120,8 @@ export class AuthService {
     deleteUser(email: string): Observable<any> {
         return this.http.delete<any>(`api/auth/users/${encodeURIComponent(email)}`);
     }
+
+  linkUserPerson(email: string, personUri: string): Observable<any> {
+    return this.http.patch<any>(`api/auth/users/${encodeURIComponent(email)}/person`, { personUri });
+  }
 }

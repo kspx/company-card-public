@@ -4,14 +4,8 @@
             <h2>Company Card Manager</h2>
             <p class="ccl__subtitle">Manage your organization's knowledge graph</p>
         </div>
-        <div class="ccl__header-actions">
-            <button mat-stroked-button (click)="router.navigate(['/stories'])">◎ Data Stories</button>
-<!--
-            <button mat-stroked-button (click)="router.navigate(['/graph'])">⬡ Knowledge Graph</button>
--->
             <app-public-nav />
-        </div>
-    </header>
+     </header>
 
     @if (needsProfile) {
         <div class="ccl__profile-banner">

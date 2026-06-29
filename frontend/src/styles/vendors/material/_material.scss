@@ -32,7 +32,7 @@ $frontend-theme: mat.define-theme(
 // that you are using.
 :root {
   @include mat.all-component-themes($frontend-theme);
-  --mat-menu-container-color: var(--app-white-color);
+  --mat-menu-container-color: var(--app-white-color, #fff);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.

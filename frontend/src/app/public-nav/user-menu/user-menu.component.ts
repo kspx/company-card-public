@@ -14,10 +14,19 @@ import {Router} from "@angular/router";
   imports: [MatFabButton, MatMenu, MatMenuTrigger, MatMenuItem, MatIcon, TranslocoDirective],
   template: `
     <ng-container *transloco="let t; prefix: 'ui.user-menu'">
-      <button class="my-menu-btn" mat-fab extended [matMenuTriggerFor]="menu" [attr.aria-label]="t('openUserMenu')">
-        {{ auth.displayName }}
+      <button class="my-menu-btn" mat-fab extended [matMenuTriggerFor]="menu"
+              [title]="auth.displayName" [attr.aria-label]="t('openUserMenu')">
+        {{ initials }}
       </button>
       <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="router.navigate(['/company-card'])">
+          <mat-icon>view_list</mat-icon>
+          <span>Cards</span>
+        </button>
+        <button mat-menu-item (click)="router.navigate(['/stories'])">
+          <mat-icon>auto_stories</mat-icon>
+          <span>Data Stories</span>
+        </button>
         @if (auth.role === 'ADMIN') {
           <button mat-menu-item (click)="router.navigate(['/admin'])">
             <mat-icon>admin_panel_settings</mat-icon>
@@ -60,6 +69,13 @@ export class UserMenuComponent extends OnDestroy$ {
   user = obsToSignal<User | null>(null, this.auth.user$, this.onDestroy$);
   router = inject(Router);
 
+
+  get initials(): string {
+    const name = this.auth.displayName ?? '';
+    const parts = name.split(/[.\s_-]+/).filter(Boolean);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return name.slice(0, 2).toUpperCase();
+  }
 
   logout() {
     this.auth.logout().subscribe({ complete: () => void this.router.navigate(['/login']) });

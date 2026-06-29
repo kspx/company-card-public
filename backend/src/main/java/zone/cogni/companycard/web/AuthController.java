@@ -49,7 +49,7 @@ public class AuthController {
     return userService.authenticate(email, password)
                       .map(u -> {
                         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                          email, null, List.of(new SimpleGrantedAuthority("ROLE_" + u.role())));
+                                email, null, List.of(new SimpleGrantedAuthority("ROLE_" + u.role())));
                         SecurityContext ctx = SecurityContextHolder.createEmptyContext();
                         ctx.setAuthentication(auth);
                         SecurityContextHolder.setContext(ctx);
@@ -58,9 +58,9 @@ public class AuthController {
                         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, ctx);
 
                         return ResponseEntity.ok(Map.of(
-                          "role", u.role(),
-                          "email", u.email(),
-                          "personUri", u.personUri()
+                                "role", u.role(),
+                                "email", u.email(),
+                                "personUri", u.personUri()
                         ));
                       })
                       .orElseGet(() -> ResponseEntity.status(401)
@@ -109,6 +109,23 @@ public class AuthController {
                            .body(Map.of("error", "email and personUri are required"));
     }
 
+    try {
+      userService.updatePersonUri(email, personUri);
+      return ResponseEntity.ok(Map.of("personUri", personUri));
+    }
+    catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest()
+                           .body(Map.of("error", e.getMessage()));
+    }
+  }
+
+  @PatchMapping("/users/{email}/person")
+  public ResponseEntity<?> linkUserPerson(@PathVariable String email, @RequestBody PersonLinkRequest body) {
+    String personUri = body.personUri();
+    if (personUri == null) {
+      return ResponseEntity.badRequest()
+                           .body(Map.of("error", "personUri is required"));
+    }
     try {
       userService.updatePersonUri(email, personUri);
       return ResponseEntity.ok(Map.of("personUri", personUri));
@@ -175,8 +192,8 @@ public class AuthController {
   public ResponseEntity<?> deleteUser(@PathVariable String email) {
     boolean deleted = userService.deleteUser(email);
     return deleted
-           ? ResponseEntity.ok(Map.of("message", "User deleted"))
-           : ResponseEntity.notFound()
-                           .build();
+            ? ResponseEntity.ok(Map.of("message", "User deleted"))
+            : ResponseEntity.notFound()
+                            .build();
   }
 }
